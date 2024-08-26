@@ -1,7 +1,7 @@
 <?php
-    require_once "../mvc/conectar.php";
-    require_once "../mvc/Local.Model.php";
-    require_once "../mvc/Local.entidad.php";
+    require_once "mvc/conectar.php";
+    require_once "mvc/Local.Model.php";
+    require_once "mvc/Local.entidad.php";
     $loc = new local();
     $model = new LocalModel();
 
@@ -57,17 +57,26 @@
             }
         }
     } */
-    include('../est/header.php');  
 ?>
 
-<body class="d-flex justify-content-center align-items-center vh-100" style="background-image: url('../images/fondo1.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="icon/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+
+<body class="d-flex justify-content-center align-items-center vh-100" style="background-image: url('images/fondologin.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
     <form action="loguin.php" method="post">
-        <div class="bg-white p-5 rounded-5 text-secondary position-relative" style="width:25rem">
-            <a class="text-decoration-none text-primary fw-semibold display-6 position-absolute top-0 end-0 px-4 pt-2" href="../index.php">X</a>
+        <div class="bg-white p-5 rounded text-secondary position-relative">
             <div class="d-flex justify-content-center">
-                <img class="opacity-50" src="../icons/usuario.png" alt="login" style="height:7rem">
+                <i class="fa fa-user fa-6x"></i>
             </div>
-            <div class="text-center fs-1 fw-bold">Log in</div>
+            <div class="text-center fs-2 fw-bold">Log in</div>
             <?php
                 if (!empty($error)) {
                     echo "<div class='alert alert-danger'>$error</div>";
@@ -75,13 +84,13 @@
             ?>
             <div class="input-group mt-3">
                 <div class="input-group-text bg-primary">
-                    <img src="../icons/username.png" alt="username" style="height:1rem">
+                    <i class="fa fa-user"></i>
                 </div>
                 <input class="form-control" name="username" type="text" placeholder="Nº de documento" pattern="[0-9]{8}" minlength="7" maxlength="8" required>
             </div>
             <div class="input-group mt-1">
                 <div class="input-group-text bg-primary">
-                    <img src="../icons/candado.png" alt="username" style="height:1rem">
+                    <i class="fa fa-solid fa-lock"></i>
                 </div>
                 <input class="form-control" name="password" type="password" placeholder="Escribe tu contraseña" pattern="[a-zA-Z0-9]+" required>
             </div>
@@ -101,5 +110,13 @@
             </div>
         </div>
     </form>
+
+    <script src="icon/jquery/jquery.min.js"></script>
+    <script src="icon/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="icon/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="icon/chart.js/Chart.min.js"></script>
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
 </body>
-<?php include('../est/footer.php'); ?>
+</html>
