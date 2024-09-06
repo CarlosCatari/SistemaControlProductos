@@ -27,7 +27,6 @@
 <body id="page-top">
     <div id="wrapper">
         <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #19002f;">
-
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html" style="background-color: #08001b;">
                 <div class="sidebar-brand-icon">
                     <i class="fa fa-user"></i>
@@ -42,41 +41,41 @@
                     </button>
                 </div>
             </li>   
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+            <li class="nav-item">
+                <a class="nav-link" href="adminpanel.php">
                     <i class="fas fa-fw fa-solid fa-house-user"></i>
                     <span>Inicio</span>
                 </a>
             </li>
             <hr class="sidebar-divider">
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="admadmin.php">
                     <i class="fas fa-fw fa-solid fa-user-tie"></i>
                     <span>Administradores</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="admalmacen.php">
                     <i class="fas fa-fw fa-solid fa-address-card"></i>
                     <span>Almaceneros</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="admproveedor.php">
                     <i class="fas fa-fw fa-solid fa-truck"></i>
                     <span>Proveedores</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="admproducto.php">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Productos</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="admcategoria.php">
                     <i class="fas fa-fw fa-solid fa-layer-group"></i>
                     <span>Categorias</span></a>
             </li>
             <hr class="sidebar-divider">
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="../index.php">
                     <i class="fas fa-fw fa-solid fa-door-open"></i>
                     <span>Cerrar Sesion</span></a>
             </li>

@@ -61,33 +61,33 @@
             </li>
             <hr class="sidebar-divider">
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="admadmin.php">
                     <i class="fas fa-fw fa-solid fa-user-tie"></i>
                     <span>Administradores</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="admalmacen.php">
                     <i class="fas fa-fw fa-solid fa-address-card"></i>
                     <span>Almaceneros</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="admproveedor.php">
                     <i class="fas fa-fw fa-solid fa-truck"></i>
                     <span>Proveedores</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="admproducto.php">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Productos</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="admcategoria.php">
                     <i class="fas fa-fw fa-solid fa-layer-group"></i>
                     <span>Categorias</span></a>
             </li>
             <hr class="sidebar-divider">
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="../index.php">
                     <i class="fas fa-fw fa-solid fa-door-open"></i>
                     <span>Cerrar Sesion</span></a>
             </li>
@@ -152,10 +152,9 @@
                                 </form>
                             </div>
                         </div>
-
                     </div>
-                    <div class="row">
 
+                    <div class="row">
                         <div class="card shadow mb-4 w-100">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Listar Categorias</h6>
@@ -209,10 +208,8 @@
                             </div>
                         </div>
                     </div>
-
-
-
                     </div>
+
                 </div>
             </div>
 
@@ -226,10 +223,7 @@
         </div>
 
     </div>
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
+    <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
 
     <script src="../icon/jquery/jquery.min.js"></script>
     <script src="../icon/bootstrap/js/bootstrap.bundle.min.js"></script>
