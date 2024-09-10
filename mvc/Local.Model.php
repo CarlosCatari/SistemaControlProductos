@@ -158,6 +158,46 @@
                 die($e->getMessage());
             }
         }
+
+        public function listarAdministrador(){
+            try {
+                $result = array();
+                $stm = $this->pdo->prepare( 'SELECT * FROM Administrador');
+                $stm->Execute();
+                foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r){
+                    $loc = new local();
+                    $loc->__Set('idadmin', $r->idadmin);
+                    $loc->__Set('nombreadmin', $r->nombreadmin);
+                    $loc->__Set('apellidoadmin', $r->apellidoadmin);
+                    $loc->__Set('dniadmin', $r->dniadmin);
+                    $loc->__Set('direccionadmin', $r->direccionadmin);
+                    $loc->__Set('telefonoadmin', $r->telefonoadmin);
+                    $loc->__Set('passwordadmin', $r->passwordadmin);
+                    $loc->__Set('habilitadoadmin', $r->habilitadoadmin);
+                    $result[] = $loc;
+                }
+                return $result;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+        public function buscarUserAdmin($dniadmin){
+            try {
+                $result = array();
+                $stm = $this->pdo->prepare( 'SELECT * FROM Administrador WHERE dniadmin = '.$dniadmin);
+                $stm->Execute();
+                foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r){
+                    $loc = new local();
+                    $loc->__Set('dniadmin', $r->dniadmin);
+                    $loc->__Set('passwordadmin', $r->passwordadmin);
+                    $loc->__Set('nombreadmin', $r->nombreadmin);
+                    $result[] = $loc;
+                }
+                return $result;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
         
         
     }

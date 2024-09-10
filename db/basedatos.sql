@@ -1,3 +1,18 @@
+--Tabla Administradores  idAdm, 
+CREATE TABLE Administrador (
+    idadmin INT AUTO_INCREMENT PRIMARY KEY,
+    nombreadmin VARCHAR(255) NOT NULL,
+    apellidoadmin VARCHAR(255) NOT NULL,
+    dniadmin VARCHAR(8) NOT NULL,
+    direccionadmin VARCHAR(255) NOT NULL,
+    telefonoadmin VARCHAR(9) NOT NULL,
+    passwordadmin VARCHAR(255) NOT NULL,
+    habilitadoadmin INT(2)NOT NULL
+);
+INSERT INTO Administrador (nombreadmin, apellidoadmin, dniadmin, direccionadmin, telefonoadmin, passwordadmin, habilitadoadmin) VALUES
+('Carlos', 'Catari Mamani', '70407040', 'Av. Ejercito 500','987654321', 'admin', '1'),
+('Angel', 'Coaquira Santos', "84519652", 'Av. Aviacion 1000', '986548154', 'angel55', '0');
+
 -- Tabla Categoria
 CREATE TABLE Categoria (
     idcategoria INT AUTO_INCREMENT PRIMARY KEY,

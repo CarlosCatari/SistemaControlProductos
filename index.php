@@ -5,16 +5,19 @@
     $loc = new local();
     $model = new LocalModel();
 
-    /* session_start();
+    require_once 'est/head.php';
+    $page = new Head('Login');
+
+    session_start();
     if (!isset($_SESSION['contador'])) {
         $_SESSION['contador'] = 0;
     }
     $error = '';
 
     if(isset($_POST["username"])) {
-        $verificador = false;
+        /* $verificador = false; */
         $verificadoradmin = false;
-        foreach ($model->buscarCliente($_REQUEST['username']) as $r) { 
+        /* foreach ($model->buscarCliente($_REQUEST['username']) as $r) { 
             $user = $_POST['username'];
             $pass = $_POST['password'];
             $dbuser = $r->__get('dni');
@@ -27,12 +30,12 @@
                 $verificador = true;
                 break;
             }
-        }
-        foreach ($model->buscarAdmin($_REQUEST['username']) as $r) { 
+        } */
+        foreach ($model->buscarUserAdmin($_REQUEST['username']) as $r) { 
             $useradmin = $_POST['username'];
             $passadmin = $_POST['password'];
             $dbuseradmin = $r->__get('dniadmin');
-            $dbpwdadmin = $r->__get('pwdadmin');
+            $dbpwdadmin = $r->__get('passwordadmin');
             $dbnombreadmin = $r->__get('nombreadmin');
         
             if ($useradmin === $dbuseradmin && $passadmin === $dbpwdadmin) {
@@ -44,9 +47,9 @@
         }
         
         if ($verificador) {
-            header('Location: peliculas.php');
+            header('Location: personal/personalpanel.php');
         } elseif($verificadoradmin){
-            header('Location: ../admin/dashboardadmin.php');
+            header('Location: admin/adminpanel.php');
         } else {
             $_SESSION['contador']++;
             if ($_SESSION['contador'] < 4) {
@@ -56,7 +59,7 @@
                 $_SESSION['contador'] = 0;
             }
         }
-    } */
+    }
 ?>
 
 <!DOCTYPE html>
@@ -69,9 +72,8 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 </head>
-
-<body class="d-flex justify-content-center align-items-center vh-100" style="background-image: url('images/fondologin.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-    <form action="loguin.php" method="post">
+<body class="d-flex justify-content-center align-items-center vh-100" style="background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(80,9,121,1) 54%, rgba(196,0,255,1) 100%);">
+    <form action="index.php" method="post">
         <div class="bg-white p-5 rounded text-secondary position-relative">
             <div class="d-flex justify-content-center">
                 <i class="fa fa-user fa-6x"></i>

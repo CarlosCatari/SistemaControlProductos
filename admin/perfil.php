@@ -15,7 +15,7 @@
     $NavHorizontal = new NavHorizontal($user);
 
     require_once '../est/head.php';
-    $page = new Head('Categorias');
+    $page = new Head('Perfil');
 
     if(isset($_POST["codcategoria"])) {
         $idcategoria = $_POST["codcategoria"];
@@ -36,7 +36,7 @@
     }
 ?>
 
-<?php echo $page->render();; ?>
+<?php echo $page->render(); ?>
 <body id="page-top">
     <div id="wrapper">
         <?php echo $NavVertical->renderNavbar(); ?>
@@ -45,25 +45,14 @@
                 <?php echo $NavHorizontal->renderNavbar(); ?>
                 <div class="container-fluid">
                     <div class="row">
-                        <h1 class="h3 mb-0 text-gray-800">Categorias</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Mis Datos</h1>
                     </div>
                     <div class="row">
                         <div class="navbar navbar-expand navbar-light topbar mb-2 static-top shadow w-100">
                             <div class="d-flex w-100">
                                 <li class="nav-item btn btn-primary me-auto">
-                                    <a href="addcategoria.php" class="text-white text-decoration-none">Agregar Categoria</a>
+                                    <a href="addcategoria.php" class="text-white text-decoration-none">Modificar Datos</a>
                                 </li>
-                                <form class="d-inline-block form-inline ml-auto mw-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar categoria"
-                                            aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -71,7 +60,7 @@
                     <div class="row">
                         <div class="card shadow mb-4 w-100">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Listar Categorias</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Mostrar datos...</h6>
                         </div>
                         <div class="card-body">
                             <?php if (!empty($msjmodificacion)): ?>
@@ -86,11 +75,11 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                             <?php endif; ?>
-                            <div class="table-responsive">
+`<!--                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                        <th class="col-1 text-center align-middle">Cod.</th>
+                                        <th class="col-1 text-center align-middle">Código</th>
                                         <th class="col-8 text-center align-middle">Categoria</th>
                                         <th class="col-3 text-center align-middle">Acciones</th>
                                         </tr>
@@ -119,7 +108,7 @@
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
-                            </div>
+                            </div> -->`
                         </div>
                     </div>
                     </div>
