@@ -5,7 +5,7 @@ class NavVertical {
     public function __construct() {
         $this->menuItems = [
             [
-                "href" => "adminpanel.php",
+                "href" => "dashboard.php",
                 "icon" => "fas fa-fw fa-solid fa-house-user",
                 "text" => "Inicio",
             ],

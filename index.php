@@ -48,7 +48,7 @@
         if ($verificador) {
             header('Location: personal/personalpanel.php');
         } elseif($verificadoradmin){
-            header('Location: admin/adminpanel.php');
+            header('Location: admin/dashboard.php');
         } else {
             $_SESSION['contador']++;
             if ($_SESSION['contador'] < 4) {

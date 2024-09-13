@@ -6,7 +6,10 @@ $loc = new local();
 $model = new LocalModel();
 
 session_start();
-$user = $_SESSION['usernameadmin'];
+$idadmin = $_SESSION['idadmin'];
+foreach ($model->buscarIdAdmin($idadmin) as $r) {
+    $user = $r->__get('nombreadmin');
+}
 
 include_once '../est/verticalnav.php';
 $NavVertical = new NavVertical();
@@ -17,7 +20,17 @@ $NavHorizontal = new NavHorizontal($user);
 require_once '../est/head.php';
 $page = new Head('Categorias');
 
-if (isset($_POST["codcategoria"])) {
+if (isset($_POST["titulocategoria"])) {
+    $titulocategoria = $_POST["titulocategoria"];
+    $data = new Local();
+    $data->__set('titulocategoria', $titulocategoria);
+    $model->agregarCategoria($data);
+    $newcategoria = strtoupper($titulocategoria);
+    $msjcategoria = 'Categoria ' . $newcategoria . ' agregado correctamente.';
+}
+
+
+/* if (isset($_POST["namecategoria"])) {
     $idcategoria = $_POST["codcategoria"];
     $titulocategoria = $_POST["nombrecategoria"];
 
@@ -33,7 +46,7 @@ if (isset($_POST["cdcategoria"])) {
     $idcategoria = $_POST['cdcategoria'];
     $model->eliminarCategoria($idcategoria);
     $msjeliminacion = 'Categoria eliminada.';
-}
+} */
 ?>
 
 <?php echo $page->render();; ?>
@@ -51,20 +64,101 @@ if (isset($_POST["cdcategoria"])) {
                     <div class="row">
                         <div class="navbar navbar-expand navbar-light topbar mb-2 static-top shadow w-100">
                             <div class="d-flex w-100">
-                                <li class="nav-item btn btn-primary me-auto">
-                                    <a href="addcategoria.php" class="text-white text-decoration-none">Agregar Categoria</a>
-                                </li>
+
+                                <!---------- Modal Agregar Categoría ---------->
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Agregar Categoria</button>
+                                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addModalLabel">Agregar Categoria</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="admcategoria.php" id="FormAddCat" method="post" class="p-3">
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-12 form-group text-left">
+                                                            <label for="titulocategoria">Categoria</label>
+                                                            <input type="text" name="titulocategoria" class="form-control border-primary rounded-3" placeholder="Titulo de categoria" pattern="[a-zA-Z\s]+" required>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                <button form="FormAddCat" type="submit" class="btn btn-primary">Guardar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
                                 <form class="d-inline-block form-inline ml-auto mw-100 navbar-search">
                                     <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar categoria"
-                                            aria-label="Search" aria-describedby="basic-addon2">
+                                        <input id="searchData" name="searchData" type="text" class="form-control bg-light border-0 small" placeholder="Buscar Categoria" aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
+                                            <button onclick="copiarvalores()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchModal">
+                                                <i onclick="copiarvalores()" class="fas fa-search fa-sm"></i>
                                             </button>
                                         </div>
                                     </div>
                                 </form>
+
+
+
+                                <!---------- Modal Buscar Categoría ---------->
+                                <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="searchModalLabel">Resultado de busqueda</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p id="dataSearch"></p>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                        <thead>
+                                                            <tr>
+
+
+                                                                  <!---------- Completar busqueda---------->
+                                                                <th class="col-1 text-center align-middle">Cod.</th>
+                                                                <th class="col-8 text-center align-middle">Categoria</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-center align-middle">.cod....</td>
+                                                                <td class="align-middle">cat......</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    function copiarvalores() {
+                                        var labelValue1 = document.getElementById('searchData').value;
+                                        document.getElementById('dataSearch').textContent = labelValue1;
+                                    }
+                                    $('#searchModal').on('show.bs.modal', function(e) {
+                                        copiarvalores();
+                                    });
+                                </script>
+
+
                             </div>
                         </div>
                     </div>
@@ -75,18 +169,16 @@ if (isset($_POST["cdcategoria"])) {
                                 <h6 class="m-0 font-weight-bold text-primary">Listar Categorias</h6>
                             </div>
                             <div class="card-body">
-                                <?php if (!empty($msjmodificacion)): ?>
+                                <!--------------------------- Alertas -------------------------->
+                                <?php if (!empty($msjcategoria)): ?>
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <?php echo $msjmodificacion; ?>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <?php echo $msjcategoria; ?>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
                                 <?php endif; ?>
-                                <?php if (!empty($msjeliminacion)): ?>
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <?php echo $msjeliminacion; ?>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                <?php endif; ?>
+
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
@@ -124,7 +216,6 @@ if (isset($_POST["cdcategoria"])) {
                                                                                 <div class="row mb-3">
                                                                                     <div class="col-md-12 form-group text-left">
                                                                                         <label for="namecategoria">Categoria</label>
-                                                                                        <!-- Input pre-llenado con el nombre de la categoría -->
                                                                                         <input type="text" name="namecategoria" class="form-control border-primary rounded-3" value="<?php echo $categoria; ?>" placeholder="Titulo de categoria" pattern="[a-zA-Z\s]+" required>
                                                                                     </div>
                                                                                 </div>
