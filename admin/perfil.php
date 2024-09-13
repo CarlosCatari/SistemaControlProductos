@@ -1,42 +1,53 @@
 <?php
-    require_once "../mvc/conectar.php";
-    require_once "../mvc/Local.Model.php";
-    require_once "../mvc/Local.entidad.php";
-    $loc = new local();
-    $model = new LocalModel();
+require_once "../mvc/conectar.php";
+require_once "../mvc/Local.Model.php";
+require_once "../mvc/Local.entidad.php";
+$loc = new local();
+$model = new LocalModel();
 
-    session_start();
-    $user = $_SESSION['usernameadmin'];
-    
-    include_once '../est/verticalnav.php';
-    $NavVertical = new NavVertical();
+session_start();
+$idadmin = $_SESSION['idadmin'];
+foreach ($model->buscarIdAdmin($idadmin) as $r) {
+    $idadmin = $r->__get('idadmin');
+    $nombreadmin = $r->__get('nombreadmin');
+    $apellidoadmin = $r->__get('apellidoadmin');
+    $dniadmin = $r->__get('dniadmin');
+    $direccionadmin = $r->__get('direccionadmin');
+    $telefonoadmin = $r->__get('telefonoadmin');
+    $passwordadmin = $r->__get('passwordadmin');
+    $habilitadoadmin = $r->__get('habilitadoadmin');
+}
 
-    include_once '../est/horizontalnav.php';
-    $NavHorizontal = new NavHorizontal($user);
+include_once '../est/verticalnav.php';
+$NavVertical = new NavVertical();
 
-    require_once '../est/head.php';
-    $page = new Head('Perfil');
+include_once '../est/horizontalnav.php';
+$NavHorizontal = new NavHorizontal($nombreadmin);
 
-    if(isset($_POST["codcategoria"])) {
-        $idcategoria = $_POST["codcategoria"];
-        $titulocategoria = $_POST["nombrecategoria"];
-        
-        $data = new Local();
-        $data->__set('idcategoria', $idcategoria);
-        $data->__set('titulocategoria', $titulocategoria);
-        
-        $model->actualizarIdCategoria($data);
-        $category = strtoupper($titulocategoria);
-        $msjmodificacion = 'Categoria '.$category.' modificada correctamente.';
-    }
-    if(isset($_POST["cdcategoria"])) {
-        $idcategoria = $_POST['cdcategoria'];
-        $model->eliminarCategoria($idcategoria);
-        $msjeliminacion = 'Categoria eliminada.';
-    }
+require_once '../est/head.php';
+$page = new Head('Perfil');
+
+if (isset($_POST["codcategoria"])) {
+    $idcategoria = $_POST["codcategoria"];
+    $titulocategoria = $_POST["nombrecategoria"];
+
+    $data = new Local();
+    $data->__set('idcategoria', $idcategoria);
+    $data->__set('titulocategoria', $titulocategoria);
+
+    $model->actualizarIdCategoria($data);
+    $category = strtoupper($titulocategoria);
+    $msjmodificacion = 'Categoria ' . $category . ' modificada correctamente.';
+}
+if (isset($_POST["cdcategoria"])) {
+    $idcategoria = $_POST['cdcategoria'];
+    $model->eliminarCategoria($idcategoria);
+    $msjeliminacion = 'Categoria eliminada.';
+}
 ?>
 
 <?php echo $page->render(); ?>
+
 <body id="page-top">
     <div id="wrapper">
         <?php echo $NavVertical->renderNavbar(); ?>
@@ -59,58 +70,65 @@
 
                     <div class="row">
                         <div class="card shadow mb-4 w-100">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Mostrar datos...</h6>
-                        </div>
-                        <div class="card-body">
-                            <?php if (!empty($msjmodificacion)): ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <?php echo $msjmodificacion; ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                            <?php endif; ?>
-                            <?php if (!empty($msjeliminacion)): ?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <?php echo $msjeliminacion; ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                            <?php endif; ?>
-`<!--                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                        <th class="col-1 text-center align-middle">Código</th>
-                                        <th class="col-8 text-center align-middle">Categoria</th>
-                                        <th class="col-3 text-center align-middle">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($model -> listarCategoria() as $r):
-                                            $idcategoria = $r->__get('idcategoria');
-                                            $categoria = $r->__get('titulocategoria');
-                                        ?>
-                                        <tr>
-                                            <td class="text-center align-middle"><?php echo $idcategoria; ?></td>
-                                            <td class="align-middle"><?php echo $categoria; ?></td>
-                                            <td class="text-center align-middle">
-                                            <div class="d-flex justify-content-around align-items-stretch">
-                                                <form action="editcategoria.php" method="post">
-                                                    <input type="hidden" name="codigocategoria" id="codigocategoria" value="<?php echo $idcategoria; ?>">
-                                                    <input type="submit" class="btn btn-info flex-fill mx-1" value="Editar">
-                                                </form>
-                                                <form action="dltcategoria.php" method="post">
-                                                    <input type="hidden" name="codigocategoria" id="codigocategoria" value="<?php echo $idcategoria; ?>">
-                                                    <input type="submit" class="btn btn-danger flex-fill mx-1" value="Eliminar">
-                                                </form>
+                            <div class="card-body">
+                                <?php if (!empty($msjmodificacion)): ?>
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <?php echo $msjmodificacion; ?>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if (!empty($msjeliminacion)): ?>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <?php echo $msjeliminacion; ?>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                <?php endif; ?>
+
+                                <div class="container-fluid">
+                                    <div class="bg-white p-3 text-secondary ">
+                                        <div class="row mb-3">
+                                            <div class="col col-12 col-md-6">
+                                                <label class="form-label" for="nombre_uno">Codigo:</label>
+                                                <input class="form-control" type="text" value="<?php echo $idadmin; ?>" readonly>
                                             </div>
-                                            </td>
-                                        </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div> -->`
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col col-12 col-md-6">
+                                                <label class="form-label" for="nombre_uno">Nombre::</label>
+                                                <input class="form-control" type="text" value="<?php echo $nombreadmin; ?>" readonly>
+                                            </div>
+                                            <div class="col col-12 col-md-6 ">
+                                                <label class="form-label" for="nombre_uno">Apellido:</label>
+                                                <input class="form-control" type="text" value="<?php echo $apellidoadmin; ?>" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col col-12 col-md-6">
+                                                <label class="form-label" for="nombre_uno">DNI:</label>
+                                                <input class="form-control" type="text" value="<?php echo $dniadmin; ?>" readonly>
+                                            </div>
+                                            <div class="col col-12 col-md-6">
+                                                <label class="form-label" for="nombre_uno">Contraseña:</label>
+                                                <input class="form-control" type="text" value="<?php echo $passwordadmin; ?>" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col col-12 col-md-6">
+                                                <label class="form-label" for="nombre_uno">Direccion:</label>
+                                                <input class="form-control" type="text" value="<?php echo $direccionadmin; ?>" readonly>
+                                            </div>
+                                            <div class="col col-12 col-md-6">
+                                                <label class="form-label" for="nombre_uno">Telefono:</label>
+                                                <input class="form-control" type="text" value="<?php echo $telefonoadmin; ?>" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
                         </div>
-                    </div>
                     </div>
 
                 </div>
@@ -128,12 +146,13 @@
     </div>
     <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
 
-    <script src="../icon/jquery/jquery.min.js"></script>
-    <script src="../icon/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../icon/jquery-easing/jquery.easing.min.js"></script>
-    <script src="../js/sb-admin-2.min.js"></script>
-    <script src="../icon/chart.js/Chart.min.js"></script>
-    <script src="../js/demo/chart-area-demo.js"></script>
-    <script src="../js/demo/chart-pie-demo.js"></script>
+    <script src="../source/jquery/jquery.min.js"></script>
+    <script src="../source/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../source/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../source/js/sb-admin-2.min.js"></script>
+    <script src="../source/chart.js/Chart.min.js"></script>
+    <script src="../source/js/demo/chart-area-demo.js"></script>
+    <script src="../source/js/demo/chart-pie-demo.js"></script>
 </body>
+
 </html>

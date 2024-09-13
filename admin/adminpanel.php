@@ -6,8 +6,11 @@
     $model = new LocalModel();
 
     session_start();
-    $user = $_SESSION['usernameadmin'];
-    
+    $idadmin = $_SESSION['idadmin'];
+    foreach ($model->buscarIdAdmin($idadmin) as $r) { 
+        $user = $r->__get('nombreadmin');
+    }
+
     include_once '../est/verticalnav.php';
     $NavVertical = new NavVertical();
 
@@ -140,13 +143,12 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-
-    <script src="../icon/jquery/jquery.min.js"></script>
-    <script src="../icon/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../icon/jquery-easing/jquery.easing.min.js"></script>
-    <script src="../js/sb-admin-2.min.js"></script>
-    <script src="../icon/chart.js/Chart.min.js"></script>
-    <script src="../js/demo/chart-area-demo.js"></script>
-    <script src="../js/demo/chart-pie-demo.js"></script>
+    <script src="../source/jquery/jquery.min.js"></script>
+    <script src="../source/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../source/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../source/js/sb-admin-2.min.js"></script>
+    <script src="../source/chart.js/Chart.min.js"></script>
+    <script src="../source/js/demo/chart-area-demo.js"></script>
+    <script src="../source/js/demo/chart-pie-demo.js"></script>
 </body>
 </html>
