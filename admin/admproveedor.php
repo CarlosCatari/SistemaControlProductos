@@ -2,46 +2,53 @@
 require_once "../mvc/conectar.php";
 require_once "../mvc/Local.Model.php";
 require_once "../mvc/Local.entidad.php";
+include_once '../est/verticalnav.php';
+include_once '../est/horizontalnav.php';
+require_once '../est/head.php';
 $loc = new local();
 $model = new LocalModel();
-
 
 session_start();
 $idadmin = $_SESSION['idadmin'];
 foreach ($model->buscarIdAdmin($idadmin) as $r) {
     $user = $r->__get('nombreadmin');
 }
-
-
-include_once '../est/verticalnav.php';
 $NavVertical = new NavVertical();
-
-include_once '../est/horizontalnav.php';
 $NavHorizontal = new NavHorizontal($user);
-
-require_once '../est/head.php';
 $page = new Head('Proveedores');
 
-/* if(isset($_POST["codcategoria"])) {
-        $idcategoria = $_POST["codcategoria"];
-        $titulocategoria = $_POST["nombrecategoria"];
-        
-        $data = new Local();
-        $data->__set('idcategoria', $idcategoria);
-        $data->__set('titulocategoria', $titulocategoria);
-        
-        $model->actualizarIdCategoria($data);
-        $category = strtoupper($titulocategoria);
-        $msjmodificacion = 'Categoria '.$category.' modificada correctamente.';
+if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(string: random_bytes(length:32));
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['token']) || $_POST['token'] !== $_SESSION['token']) {
+        die('Token invalido');
     }
-    if(isset($_POST["cdcategoria"])) {
-        $idcategoria = $_POST['cdcategoria'];
-        $model->eliminarCategoria($idcategoria);
-        $msjeliminacion = 'Categoria eliminada.';
-    } */
+    if (isset($_POST["rucprove"])) {
+        $rucprove = $_POST["rucprove"];
+        $nombreprove = $_POST["nombreprove"];
+        $tipoprove = $_POST["tipoprove"];
+        $direccionprove = $_POST["direccionprove"];
+        $telefonoprove = $_POST["telefonoprove"];
+        $correoprove = $_POST["correoprove"];
 
+        $data = new Local();
+        $data->__set('ruc', $rucprove);
+        $data->__set('nombre', $nombreprove);
+        $data->__set('tipo', $tipoprove);
+        $data->__set('direccion', $direccionprove);
+        $data->__set('telefono', $telefonoprove);
+        $data->__set('correo', $correoprove);
+        $model->agregarProveedor($data);
 
+        $newproveedor = strtoupper($nombreprove);
+        $_SESSION['msjproveedor'] = 'Proveedor ' . $newproveedor . ' agregado correctamente.';
+        header(header: 'Location: admproveedor.php');
+        exit;
+    }
+}
 
+/* 
 if (isset($_POST["codcategoria"])) {
     $idcategoria = $_POST["codcategoria"];
     $titulocategoria = $_POST["nombrecategoria"];
@@ -58,11 +65,10 @@ if (isset($_POST["cdcategoria"])) {
     $idcategoria = $_POST['cdcategoria'];
     $model->eliminarCategoria($idcategoria);
     $msjeliminacion = 'Categoria eliminada.';
-}
+} */
 ?>
 
 <?php echo $page->render();; ?>
-
 <body id="page-top">
     <div id="wrapper">
         <?php echo $NavVertical->renderNavbar(); ?>
@@ -76,9 +82,58 @@ if (isset($_POST["cdcategoria"])) {
                     <div class="row">
                         <div class="navbar navbar-expand navbar-light topbar mb-2 static-top shadow w-100">
                             <div class="d-flex w-100">
-                                <li class="nav-item btn btn-primary me-auto">
-                                    <a href="addcategoria.php" class="text-white text-decoration-none">Agregar Proveedores</a>
-                                </li>
+                                <!---------- Modal Agregar Categoría ---------->
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Agregar Proveedor</button>
+                                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addModalLabel">Nuevo Proveedor</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body p-1">
+                                                <form action="admproveedor.php" id="FormAddProv" method="post" class="px-3">
+                                                    <div class="row mb-1">
+                                                        <div class="col-md-12 form-group text-left">
+                                                            
+                                                            <label for="rucprove" class="mb-0 mt-1">RUC:</label>
+                                                            <input type="text" name="rucprove" class="form-control border-primary rounded-3" placeholder="RUC" required>
+                                                            <input type="hidden" name="token" value="<?php echo htmlspecialchars(string: $_SESSION['token']); ?>">
+
+                                                            <label for="nombreprove" class="mb-0 mt-1">Empresa/Representante:</label>
+                                                            <input type="text" name="nombreprove" class="form-control border-primary rounded-3" placeholder="Empresa o Representante"  required>
+
+                                                            
+
+                                                            <label for="tipoprove" class="mb-0 mt-1">Tipo:</label>
+                                                            <input type="text" name="tipoprove" class="form-control border-primary rounded-3" placeholder="Tipo o rubro" required>
+
+                                                            <label for="direccionprove" class="mb-0 mt-1">Dirección:</label>
+                                                            <input type="text" name="direccionprove" class="form-control border-primary rounded-3" placeholder="Dirección actual"  required>
+
+                                                            <label for="telefonoprove" class="mb-0 mt-1">Telefono:</label>
+                                                            <input type="text" name="telefonoprove" class="form-control border-primary rounded-3" placeholder="Telefono" required>
+
+                                                            <label for="correoprove" class="mb-0 mt-1">Correo:</label>
+                                                            <input type="text" name="correoprove" class="form-control border-primary rounded-3" placeholder="Correo" required>
+
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                <button form="FormAddProv" type="submit" class="btn btn-primary">Guardar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
                                 <form class="d-inline-block form-inline ml-auto mw-100 navbar-search">
                                     <div class="input-group">
                                         <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar proveedor"
@@ -100,17 +155,15 @@ if (isset($_POST["cdcategoria"])) {
                                 <h6 class="m-0 font-weight-bold text-primary">Listar Proveedores</h6>
                             </div>
                             <div class="card-body">
-                                <?php if (!empty($msjmodificacion)): ?>
+                                <!--------------------------- Alertas -------------------------->
+                                <?php if (!empty($_SESSION['msjproveedor'])): ?>
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <?php echo $msjmodificacion; ?>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <?php echo htmlspecialchars($_SESSION['msjproveedor']); ?>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
-                                <?php endif; ?>
-                                <?php if (!empty($msjeliminacion)): ?>
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <?php echo $msjeliminacion; ?>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
+                                    <?php unset($_SESSION['msjproveedor']); ?>
                                 <?php endif; ?>
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

@@ -2,6 +2,9 @@
 require_once "../mvc/conectar.php";
 require_once "../mvc/Local.Model.php";
 require_once "../mvc/Local.entidad.php";
+include_once '../est/verticalnav.php';
+include_once '../est/horizontalnav.php';
+require_once '../est/head.php';
 $loc = new local();
 $model = new LocalModel();
 
@@ -10,26 +13,45 @@ $idadmin = $_SESSION['idadmin'];
 foreach ($model->buscarIdAdmin($idadmin) as $r) {
     $user = $r->__get('nombreadmin');
 }
-
-include_once '../est/verticalnav.php';
 $NavVertical = new NavVertical();
-
-include_once '../est/horizontalnav.php';
 $NavHorizontal = new NavHorizontal($user);
-
-require_once '../est/head.php';
 $page = new Head('Categorias');
 
-if (isset($_POST["titulocategoria"])) {
-    $titulocategoria = $_POST["titulocategoria"];
-    $data = new Local();
-    $data->__set('titulocategoria', $titulocategoria);
-    $model->agregarCategoria($data);
-    $newcategoria = strtoupper($titulocategoria);
-    $msjcategoria = 'Categoria ' . $newcategoria . ' agregado correctamente.';
+// Inicializar los tokens si no están establecidos
+if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+}
+if (empty($_SESSION['tokendlt'])) {
+    $_SESSION['tokendlt'] = bin2hex(random_bytes(32));
 }
 
-
+// Manejar las solicitudes POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['token']) && $_POST['token'] === $_SESSION['token']) {
+        // Manejar la adición de una categoría
+        if (isset($_POST['titulocategoria'])) {
+            $titulocategoria = $_POST['titulocategoria'];
+            $data = new Local();
+            $data->__set('titulocategoria', $titulocategoria);
+            $model->agregarCategoria($data);
+            $newcategoria = strtoupper($titulocategoria);
+            $_SESSION['msjcategoria'] = 'Categoría ' . $newcategoria . ' agregada correctamente.';
+            header('Location: admcategoria.php');
+            exit;
+        }
+    } elseif (isset($_POST['tokendlt']) && $_POST['tokendlt'] === $_SESSION['tokendlt']) {
+        // Manejar la eliminación de una categoría
+        if (isset($_POST['cdcategoria'])) {
+            $idcategoria = $_POST['cdcategoria'];
+            $model->eliminarCategoria($idcategoria);
+            $_SESSION['msjcategoriadlt'] = 'Categoría eliminada.';
+            header('Location: admcategoria.php');
+            exit;
+        }
+    } else {
+        die('Token inválido');
+    }
+}
 /* if (isset($_POST["namecategoria"])) {
     $idcategoria = $_POST["codcategoria"];
     $titulocategoria = $_POST["nombrecategoria"];
@@ -41,12 +63,9 @@ if (isset($_POST["titulocategoria"])) {
     $model->actualizarIdCategoria($data);
     $category = strtoupper($titulocategoria);
     $msjmodificacion = 'Categoria ' . $category . ' modificada correctamente.';
-}
-if (isset($_POST["cdcategoria"])) {
-    $idcategoria = $_POST['cdcategoria'];
-    $model->eliminarCategoria($idcategoria);
-    $msjeliminacion = 'Categoria eliminada.';
-} */
+}*/
+
+
 ?>
 
 <?php echo $page->render();; ?>
@@ -71,7 +90,7 @@ if (isset($_POST["cdcategoria"])) {
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="addModalLabel">Agregar Categoria</h5>
+                                                <h5 class="modal-title" id="addModalLabel">Nueva Categoria</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -82,6 +101,7 @@ if (isset($_POST["cdcategoria"])) {
                                                         <div class="col-md-12 form-group text-left">
                                                             <label for="titulocategoria">Categoria</label>
                                                             <input type="text" name="titulocategoria" class="form-control border-primary rounded-3" placeholder="Titulo de categoria" pattern="[a-zA-Z\s]+" required>
+                                                            <input type="hidden" name="token" value="<?php echo htmlspecialchars(string: $_SESSION['token']); ?>">
                                                         </div>
                                                     </div>
                                                 </form>
@@ -100,8 +120,8 @@ if (isset($_POST["cdcategoria"])) {
                                     <div class="input-group">
                                         <input id="searchData" name="searchData" type="text" class="form-control bg-light border-0 small" placeholder="Buscar Categoria" aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
-                                            <button onclick="copiarvalores()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchModal">
-                                                <i onclick="copiarvalores()" class="fas fa-search fa-sm"></i>
+                                            <button onclick="copiarvalores() , enviarBusqueda()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchModal">
+                                                <i onclick="copiarvalores(), enviarBusqueda()" class="fas fa-search fa-sm"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -120,25 +140,93 @@ if (isset($_POST["cdcategoria"])) {
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <p id="dataSearch"></p>
                                                 <div class="table-responsive">
+                                                    <p>Resultado de busqueda para: <span id="dataSearch"></span></p>
                                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                                         <thead>
                                                             <tr>
-
-
-                                                                  <!---------- Completar busqueda---------->
                                                                 <th class="col-1 text-center align-middle">Cod.</th>
                                                                 <th class="col-8 text-center align-middle">Categoria</th>
+                                                                <th class="col-3 text-center align-middle">Acciones</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td class="text-center align-middle">.cod....</td>
-                                                                <td class="align-middle">cat......</td>
-                                                            </tr>
+
+                                                            <?php
+                                                            $valorbusqueda = "Equipo";
+                                                            foreach ($model->buscarCategoria($valorbusqueda) as $r):
+                                                                $idcategoria = $r->__get('idcategoria');
+                                                                $categoria = $r->__get('titulocategoria');
+                                                            ?>
+                                                                <tr>
+                                                                    <td class="text-center align-middle"><?php echo $idcategoria; ?></td>
+                                                                    <td class="align-middle"><?php echo $categoria; ?></td>
+                                                                    <td class="text-center align-middle">
+                                                                        <div class="d-flex justify-content-around align-items-stretch">
+                                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?php echo $idcategoria; ?>">Editar</button>
+                                                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?php echo $idcategoria; ?>">Eliminar</button>
+
+                                                                            <!---------- Modal Editar Categoría ---------->
+                                                                            <div class="modal fade" id="editModal<?php echo $idcategoria; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $idcategoria; ?>" aria-hidden="true">
+                                                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                                    <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                            <h5 class="modal-title" id="editModalLabel<?php echo $idcategoria; ?>">Editar Categoria</h5>
+                                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                                <span aria-hidden="true">&times;</span>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <div class="modal-body">
+                                                                                            <form action="#" method="post" class="p-3">
+                                                                                                <div class="row mb-3">
+                                                                                                    <div class="col-md-12 form-group text-left">
+                                                                                                        <label for="namecategoria">Categoria</label>
+                                                                                                        <input type="text" name="namecategoria" class="form-control border-primary rounded-3" value="<?php echo $categoria; ?>" placeholder="Titulo de categoria" pattern="[a-zA-Z\s]+" required>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </form>
+                                                                                        </div>
+                                                                                        <div class="modal-footer">
+                                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                                                            <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <!---------- Modal Eliminar Categoría ---------->
+                                                                            <div class="modal fade" id="deleteModal<?php echo $idcategoria; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel<?php echo $idcategoria; ?>" aria-hidden="true">
+                                                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                                    <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                            <h5 class="modal-title" id="deleteModalLabel<?php echo $idcategoria; ?>">Confirmar Eliminación</h5>
+                                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                                <span aria-hidden="true">&times;</span>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <div class="modal-body">
+                                                                                            <p>¿Estás seguro de que deseas eliminar la categoría:<br><strong><?php echo $categoria; ?></strong>?</p>
+                                                                                        </div>
+                                                                                        <div class="modal-footer">
+                                                                                            <form action="admcategoria.php" method="post">
+                                                                                                <input type="hidden" name="tokendlt" value="<?php echo $_SESSION['tokendlt']; ?>">
+                                                                                                <input type="hidden" name="cdcategoria" value="<?php echo $idcategoria; ?>">
+                                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                                                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                                                            </form>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            <?php endforeach; ?>
                                                         </tbody>
                                                     </table>
+
+
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -170,13 +258,14 @@ if (isset($_POST["cdcategoria"])) {
                             </div>
                             <div class="card-body">
                                 <!--------------------------- Alertas -------------------------->
-                                <?php if (!empty($msjcategoria)): ?>
+                                <?php if (!empty($_SESSION['msjcategoria'])): ?>
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <?php echo $msjcategoria; ?>
+                                        <?php echo htmlspecialchars($_SESSION['msjcategoria']); ?>
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
+                                    <?php unset($_SESSION['msjcategoria']); ?>
                                 <?php endif; ?>
 
                                 <div class="table-responsive">
@@ -243,7 +332,7 @@ if (isset($_POST["cdcategoria"])) {
                                                                             <p>¿Estás seguro de que deseas eliminar la categoría:<br><strong><?php echo $categoria; ?></strong>?</p>
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                            <form action="dltcategoria.php" method="post">
+                                                                            <form action="admcategoria.php" method="post">
                                                                                 <input type="hidden" name="codigocategoria" value="<?php echo $idcategoria; ?>">
                                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                                                                                 <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -259,17 +348,10 @@ if (isset($_POST["cdcategoria"])) {
                                             <?php endforeach; ?>
                                         </tbody>
                                     </table>
-
-
-
-
-
-
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
