@@ -43,8 +43,7 @@ $page = new Head('Administradores');
                                 </li>
                                 <form class="d-inline-block form-inline ml-auto mw-100 navbar-search">
                                     <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar Administrador"
-                                            aria-label="Search" aria-describedby="basic-addon2">
+                                        <input type="text" name="searchadmin" class="form-control bg-light border-0 small" placeholder="Buscar Administrador" aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="button">
                                                 <i class="fas fa-search fa-sm"></i>
@@ -150,9 +149,6 @@ $page = new Head('Administradores');
     <script src="../source/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../source/jquery-easing/jquery.easing.min.js"></script>
     <script src="../source/js/sb-admin-2.min.js"></script>
-    <script src="../source/chart.js/Chart.min.js"></script>
-    <script src="../source/js/demo/chart-area-demo.js"></script>
-    <script src="../source/js/demo/chart-pie-demo.js"></script>
 </body>
 
 </html>

@@ -99,25 +99,25 @@ if (isset($_POST["cdcategoria"])) {
                                                         <div class="col-md-12 form-group text-left">
                                                             
                                                             <label for="rucprove" class="mb-0 mt-1">RUC:</label>
-                                                            <input type="text" name="rucprove" class="form-control border-primary rounded-3" placeholder="RUC" required>
+                                                            <input type="text" name="rucprove" id="rucprove" class="form-control border-primary rounded-3" placeholder="RUC" required>
                                                             <input type="hidden" name="token" value="<?php echo htmlspecialchars(string: $_SESSION['token']); ?>">
 
                                                             <label for="nombreprove" class="mb-0 mt-1">Empresa/Representante:</label>
-                                                            <input type="text" name="nombreprove" class="form-control border-primary rounded-3" placeholder="Empresa o Representante"  required>
+                                                            <input type="text" name="nombreprove" id="nombreprove" class="form-control border-primary rounded-3" placeholder="Empresa o Representante"  required>
 
                                                             
 
                                                             <label for="tipoprove" class="mb-0 mt-1">Tipo:</label>
-                                                            <input type="text" name="tipoprove" class="form-control border-primary rounded-3" placeholder="Tipo o rubro" required>
+                                                            <input type="text" name="tipoprove" id="tipoprove" class="form-control border-primary rounded-3" placeholder="Tipo o rubro" required>
 
                                                             <label for="direccionprove" class="mb-0 mt-1">Dirección:</label>
-                                                            <input type="text" name="direccionprove" class="form-control border-primary rounded-3" placeholder="Dirección actual"  required>
+                                                            <input type="text" name="direccionprove" id="direccionprove" class="form-control border-primary rounded-3" placeholder="Dirección actual"  required>
 
                                                             <label for="telefonoprove" class="mb-0 mt-1">Telefono:</label>
-                                                            <input type="text" name="telefonoprove" class="form-control border-primary rounded-3" placeholder="Telefono" required>
+                                                            <input type="text" name="telefonoprove" id="telefonoprove" class="form-control border-primary rounded-3" placeholder="Telefono" required>
 
                                                             <label for="correoprove" class="mb-0 mt-1">Correo:</label>
-                                                            <input type="text" name="correoprove" class="form-control border-primary rounded-3" placeholder="Correo" required>
+                                                            <input type="text" name="correoprove" id="correoprove" class="form-control border-primary rounded-3" placeholder="Correo" required>
 
                                                         </div>
                                                     </div>
@@ -136,8 +136,7 @@ if (isset($_POST["cdcategoria"])) {
 
                                 <form class="d-inline-block form-inline ml-auto mw-100 navbar-search">
                                     <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar proveedor"
-                                            aria-label="Search" aria-describedby="basic-addon2">
+                                        <input type="text" name="searchprovee" class="form-control bg-light border-0 small" placeholder="Buscar proveedor" aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="button">
                                                 <i class="fas fa-search fa-sm"></i>
@@ -234,13 +233,11 @@ if (isset($_POST["cdcategoria"])) {
 
     </div>
     <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    
     <script src="../source/jquery/jquery.min.js"></script>
     <script src="../source/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../source/jquery-easing/jquery.easing.min.js"></script>
     <script src="../source/js/sb-admin-2.min.js"></script>
-    <script src="../source/chart.js/Chart.min.js"></script>
-    <script src="../source/js/demo/chart-area-demo.js"></script>
-    <script src="../source/js/demo/chart-pie-demo.js"></script>
 </body>
 
 </html>

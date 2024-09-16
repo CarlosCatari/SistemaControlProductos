@@ -27,7 +27,7 @@ $NavHorizontal = new NavHorizontal($nombreadmin);
 require_once '../est/head.php';
 $page = new Head('Perfil');
 
-if (isset($_POST["codcategoria"])) {
+/* if (isset($_POST["codcategoria"])) {
     $idcategoria = $_POST["codcategoria"];
     $titulocategoria = $_POST["nombrecategoria"];
 
@@ -43,7 +43,7 @@ if (isset($_POST["cdcategoria"])) {
     $idcategoria = $_POST['cdcategoria'];
     $model->eliminarCategoria($idcategoria);
     $msjeliminacion = 'Categoria eliminada.';
-}
+} */
 ?>
 
 <?php echo $page->render(); ?>
@@ -150,9 +150,6 @@ if (isset($_POST["cdcategoria"])) {
     <script src="../source/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../source/jquery-easing/jquery.easing.min.js"></script>
     <script src="../source/js/sb-admin-2.min.js"></script>
-    <script src="../source/chart.js/Chart.min.js"></script>
-    <script src="../source/js/demo/chart-area-demo.js"></script>
-    <script src="../source/js/demo/chart-pie-demo.js"></script>
 </body>
 
 </html>

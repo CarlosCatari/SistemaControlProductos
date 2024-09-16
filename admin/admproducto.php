@@ -79,11 +79,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <div class="row mb-1">
                                                         <div class="col-md-12 form-group text-left">
                                                             <label for="tituloprod" class="mb-0 mt-1">Producto:</label>
-                                                            <input type="text" name="tituloprod" class="form-control border-primary rounded-3" placeholder="Titulo del producto" required>
+                                                            <input type="text" name="tituloprod" id="tituloprod" class="form-control border-primary rounded-3" placeholder="Titulo del producto" required>
                                                             <input type="hidden" name="token" value="<?php echo htmlspecialchars(string: $_SESSION['token']); ?>">
 
                                                             <label for="categoriaprod" class="mb-0 mt-1">Categoria</label>
-                                                            <select class="form-control border-primary rounded-3" name="categoriaprod" aria-label="Default select example">
+                                                            <select class="form-control border-primary rounded-3" name="categoriaprod" id="categoriaprod" aria-label="Default select example">
                                                                 <option value="" disabled selected>Seleccionar Categoria</option>
                                                                 <?php foreach ($model->listarCategoria() as $r):
                                                                     $idcategoria = $r->__get('idcategoria');
@@ -103,15 +103,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                             <div class="mb-3 row">
                                                                 <div class="col-6">
                                                                     <label for="precioprod" class="form-label">Precio:</label>
-                                                                    <input type="text" name="precioprod" class="form-control border-primary rounded-3" placeholder="S/. 00.00" required>
+                                                                    <input type="text" name="precioprod" id="precioprod" class="form-control border-primary rounded-3" placeholder="S/. 00.00" required>
                                                                 </div>
                                                                 <div class="col-6">
                                                                     <label for="stockprod" class="form-label">Stock:</label>
-                                                                    <input type="text" name="stockprod" class="form-control border-primary rounded-3" placeholder="Cantidad en almacén" required>
+                                                                    <input type="text" name="stockprod" id="stockprod"  class="form-control border-primary rounded-3" placeholder="Cantidad en almacén" required>
                                                                 </div>
                                                             </div>
                                                             <label for="proveedorprod" class="mb-0 mt-1">Proveedor:</label>
-                                                            <select class="form-control border-primary rounded-3" name="proveedorprod" aria-label="Default select example">
+                                                            <select class="form-control border-primary rounded-3" name="proveedorprod" id="proveedorprod" aria-label="Default select example">
                                                                 <option value="" disabled selected>Seleccionar Proveedor</option>
                                                                 <?php foreach ($model->listarProveedor() as $r):
                                                                     $idproveedor = $r->__get('idproveedor');
@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                                 <form class="d-inline-block form-inline ml-auto mw-100 navbar-search">
                                     <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar categoria"
+                                        <input type="text" name="searchproduct" class="form-control bg-light border-0 small" placeholder="Buscar categoria"
                                             aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="button">
@@ -238,9 +238,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="../source/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../source/jquery-easing/jquery.easing.min.js"></script>
     <script src="../source/js/sb-admin-2.min.js"></script>
-    <script src="../source/chart.js/Chart.min.js"></script>
-    <script src="../source/js/demo/chart-area-demo.js"></script>
-    <script src="../source/js/demo/chart-pie-demo.js"></script>
 </body>
 
 </html>

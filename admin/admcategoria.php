@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <div class="row mb-3">
                                                         <div class="col-md-12 form-group text-left">
                                                             <label for="titulocategoria">Categoria</label>
-                                                            <input type="text" name="titulocategoria" class="form-control border-primary rounded-3" placeholder="Titulo de categoria" pattern="[a-zA-Z\s]+" required>
+                                                            <input type="text" name="titulocategoria" id="titulocategoria" class="form-control border-primary rounded-3" placeholder="Titulo de categoria" pattern="[a-zA-Z\s]+" required>
                                                             <input type="hidden" name="token" value="<?php echo htmlspecialchars(string: $_SESSION['token']); ?>">
                                                         </div>
                                                     </div>
@@ -323,14 +323,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                             <form action="admcategoria.php" id="FormEditCat<?php echo $idcategoria; ?>" method="post" class="p-3">
                                                                                 <div class="row mb-3">
                                                                                     <div class="col-md-12 form-group text-left">
-                                                                                        <label for="modnamecat">Codigo:</label>
+                                                                                        <label for="modcodcat">Codigo:</label>
                                                                                         <input type="hidden" name="tokenedit" value="<?php echo $_SESSION['tokenedit']; ?>">
-                                                                                        <input type="text" name="modcodcat" class="form-control border-primary rounded-3" value="<?php echo $idcategoria; ?>" readonly>
+                                                                                        <input type="text" id="modcodcat" name="modcodcat" class="form-control border-primary rounded-3" value="<?php echo $idcategoria; ?>" readonly>
                                                                                     </div>
 
                                                                                     <div class="col-md-12 form-group text-left">
                                                                                         <label for="modnamecat">Categoria</label>
-                                                                                        <input type="text" name="modnamecat" class="form-control border-primary rounded-3" value="<?php echo $categoria; ?>" placeholder="Titulo de categoria" pattern="[a-zA-Z\s]+" required>
+                                                                                        <input type="text" id="modnamecat" name="modnamecat" class="form-control border-primary rounded-3" value="<?php echo $categoria; ?>" placeholder="Titulo de categoria" pattern="[a-zA-Z\s]+" required>
                                                                                     </div>
                                                                                 </div>
                                                                             </form>
@@ -397,9 +397,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="../source/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../source/jquery-easing/jquery.easing.min.js"></script>
     <script src="../source/js/sb-admin-2.min.js"></script>
-    <script src="../source/chart.js/Chart.min.js"></script>
-    <script src="../source/js/demo/chart-area-demo.js"></script>
-    <script src="../source/js/demo/chart-pie-demo.js"></script>
 </body>
 
 </html>
