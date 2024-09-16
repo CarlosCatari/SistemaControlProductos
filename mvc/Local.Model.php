@@ -45,7 +45,7 @@
                 die($e->getMessage());
             }
         }
-        public function actualizarIdCategoria(Local $data){
+        public function actualizarCategoria(Local $data){
             try {
                 $stm = "UPDATE Categoria SET titulocategoria = ? WHERE idcategoria = ?";
                 $this->pdo->prepare($stm)->execute(array(

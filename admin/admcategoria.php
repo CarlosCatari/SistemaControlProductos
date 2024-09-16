@@ -24,52 +24,55 @@ if (empty($_SESSION['token'])) {
 if (empty($_SESSION['tokendlt'])) {
     $_SESSION['tokendlt'] = bin2hex(random_bytes(32));
 }
+if (empty($_SESSION['tokenedit'])) {
+    $_SESSION['tokenedit'] = bin2hex(random_bytes(32));
+}
 
-// Manejar las solicitudes POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['token']) && $_POST['token'] === $_SESSION['token']) {
-        // Manejar la adición de una categoría
+        //  Agregar una categoría
         if (isset($_POST['titulocategoria'])) {
             $titulocategoria = $_POST['titulocategoria'];
             $data = new Local();
             $data->__set('titulocategoria', $titulocategoria);
-            $model->agregarCategoria($data);
-            $newcategoria = strtoupper($titulocategoria);
+            $model->agregarCategoria(data: $data);
+            $newcategoria = strtoupper(string: $titulocategoria);
             $_SESSION['msjcategoria'] = 'Categoría ' . $newcategoria . ' agregada correctamente.';
-            header('Location: admcategoria.php');
+            header(header: 'Location: admcategoria.php');
             exit;
         }
     } elseif (isset($_POST['tokendlt']) && $_POST['tokendlt'] === $_SESSION['tokendlt']) {
-        // Manejar la eliminación de una categoría
-        if (isset($_POST['cdcategoria'])) {
-            $idcategoria = $_POST['cdcategoria'];
-            $model->eliminarCategoria($idcategoria);
-            $_SESSION['msjcategoriadlt'] = 'Categoría eliminada.';
-            header('Location: admcategoria.php');
+        // Eliminación de una categoría
+        if (isset($_POST['codigocategoria'])) {
+            $idcategoria = $_POST['codigocategoria'];
+            $model->eliminarCategoria(idcategoria: $idcategoria);
+            $_SESSION['msjdeletecat'] = 'Categoría eliminada correctamente.';
+            header(header: 'Location: admcategoria.php');
+            exit;
+        }
+    } elseif (isset($_POST['tokenedit']) && $_POST['tokenedit'] === $_SESSION['tokenedit']) {
+        // Editar una categoría
+        if (isset($_POST["modnamecat"])) {
+            $idcategoria = $_POST["modcodcat"];
+            $titulocategoria = $_POST["modnamecat"];
+        
+            $data = new Local();
+            $data->__set('idcategoria', $idcategoria);
+            $data->__set('titulocategoria', $titulocategoria);
+        
+            $model->actualizarCategoria($data);
+            /* $category = strtoupper($titulocategoria);
+            $msjmodificacion = 'Categoria ' . $category . ' modificada correctamente.'; */
+            header(header: 'Location: admcategoria.php');
             exit;
         }
     } else {
         die('Token inválido');
     }
 }
-/* if (isset($_POST["namecategoria"])) {
-    $idcategoria = $_POST["codcategoria"];
-    $titulocategoria = $_POST["nombrecategoria"];
-
-    $data = new Local();
-    $data->__set('idcategoria', $idcategoria);
-    $data->__set('titulocategoria', $titulocategoria);
-
-    $model->actualizarIdCategoria($data);
-    $category = strtoupper($titulocategoria);
-    $msjmodificacion = 'Categoria ' . $category . ' modificada correctamente.';
-}*/
-
 
 ?>
-
 <?php echo $page->render();; ?>
-
 <body id="page-top">
     <div id="wrapper">
         <?php echo $NavVertical->renderNavbar(); ?>
@@ -165,8 +168,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                         <div class="d-flex justify-content-around align-items-stretch">
                                                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?php echo $idcategoria; ?>">Editar</button>
                                                                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?php echo $idcategoria; ?>">Eliminar</button>
-
-                                                                            <!---------- Modal Editar Categoría ---------->
                                                                             <div class="modal fade" id="editModal<?php echo $idcategoria; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $idcategoria; ?>" aria-hidden="true">
                                                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                                                     <div class="modal-content">
@@ -193,8 +194,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-
-                                                                            <!---------- Modal Eliminar Categoría ---------->
                                                                             <div class="modal fade" id="deleteModal<?php echo $idcategoria; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel<?php echo $idcategoria; ?>" aria-hidden="true">
                                                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                                                     <div class="modal-content">
@@ -208,8 +207,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                             <p>¿Estás seguro de que deseas eliminar la categoría:<br><strong><?php echo $categoria; ?></strong>?</p>
                                                                                         </div>
                                                                                         <div class="modal-footer">
-                                                                                            <form action="admcategoria.php" method="post">
-                                                                                                <input type="hidden" name="tokendlt" value="<?php echo $_SESSION['tokendlt']; ?>">
+                                                                                            <form action="" method="post">
+                                                                                                
                                                                                                 <input type="hidden" name="cdcategoria" value="<?php echo $idcategoria; ?>">
                                                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                                                                                                 <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -218,15 +217,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-
                                                                         </div>
                                                                     </td>
                                                                 </tr>
                                                             <?php endforeach; ?>
                                                         </tbody>
                                                     </table>
-
-
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -267,6 +263,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </div>
                                     <?php unset($_SESSION['msjcategoria']); ?>
                                 <?php endif; ?>
+                                
+                                <?php if (!empty($_SESSION['msjdeletecat'])): ?>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <?php echo htmlspecialchars($_SESSION['msjdeletecat']); ?>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <?php unset($_SESSION['msjdeletecat']); ?>
+                                <?php endif; ?>
+
+
+
 
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -301,18 +310,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                             </button>
                                                                         </div>
                                                                         <div class="modal-body">
-                                                                            <form action="#" method="post" class="p-3">
+                                                                            <form action="admcategoria.php" id="FormEditCat" method="post" class="p-3">
                                                                                 <div class="row mb-3">
-                                                                                    <div class="col-md-12 form-group text-left">
-                                                                                        <label for="namecategoria">Categoria</label>
-                                                                                        <input type="text" name="namecategoria" class="form-control border-primary rounded-3" value="<?php echo $categoria; ?>" placeholder="Titulo de categoria" pattern="[a-zA-Z\s]+" required>
+                                                                                    <div class="col-md-12 form-group text-left"> 
+                                                                                        <label for="modnamecat">Categoria</label>
+                                                                                        <input type="hidden" name="tokenedit" value="<?php echo $_SESSION['tokenedit']; ?>">
+                                                                                        <input type="text" name="modcodcat" value="<?php echo $idcategoria; ?>">
+                                                                                        <input type="text" name="modnamecat" class="form-control border-primary rounded-3" value="<?php echo $categoria; ?>" placeholder="Titulo de categoria" pattern="[a-zA-Z\s]+" required>
                                                                                     </div>
                                                                                 </div>
                                                                             </form>
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                                            <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                                                                            <button type="submit" form="FormEditCat" class="btn btn-primary">Guardar Cambios <?php echo $idcategoria; ?></button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -333,6 +344,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <form action="admcategoria.php" method="post">
+                                                                                <input type="hidden" name="tokendlt" value="<?php echo $_SESSION['tokendlt']; ?>">
                                                                                 <input type="hidden" name="codigocategoria" value="<?php echo $idcategoria; ?>">
                                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                                                                                 <button type="submit" class="btn btn-danger">Eliminar</button>
