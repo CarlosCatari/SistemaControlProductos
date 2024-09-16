@@ -13,6 +13,21 @@ INSERT INTO Administrador (nombreadmin, apellidoadmin, dniadmin, direccionadmin,
 ('Carlos Abel', 'Catari Mamani', '70407040', 'Av. Ejercito 500','987654321', 'admin', '1'),
 ('Angel Gabriel', 'Coaquira Santos', "84519652", 'Av. Aviacion 1000', '986548154', 'angel55', '0');
 
+--Tabla Administradores 
+CREATE TABLE Personal (
+    idpersonal INT AUTO_INCREMENT PRIMARY KEY,
+    nombreperso VARCHAR(255) NOT NULL,
+    apellidoperso VARCHAR(255) NOT NULL,
+    dniperso VARCHAR(8) NOT NULL,
+    direccionperso VARCHAR(255) NOT NULL,
+    telefonoperso VARCHAR(9) NOT NULL,
+    passwordperso VARCHAR(255) NOT NULL,
+    habilitadoperso INT(2)NOT NULL
+);
+INSERT INTO Administrador (nombreperso, apellidoperso, dniperso, direccionperso, telefonoperso, passwordperso, habilitadoperso) VALUES
+('Sebastian', 'Santos Paz', '70457740', 'Av. Arequipa 500','987654561', 'sebas123', '1'),
+('Gabriel', 'Coaquira Santos', "84598652", 'Av. Bustamante 1220', '986589154', 'gabriel123', '0');
+
 -- Tabla Categoria
 CREATE TABLE Categoria (
     idcategoria INT AUTO_INCREMENT PRIMARY KEY,

@@ -89,34 +89,34 @@ $page = new Head('Personal');
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($model->listarAdministrador() as $r):
-                                                $idadmin = $r->__get('idadmin');
-                                                $nombreadmin = $r->__get('nombreadmin');
-                                                $apellidoadmin = $r->__get('apellidoadmin');
-                                                $dniadmin = $r->__get('dniadmin');
-                                                $direccionadmin = $r->__get('direccionadmin');
-                                                $telefonoadmin = $r->__get('telefonoadmin');
-                                                $passwordadmin = $r->__get('passwordadmin');
-                                                $habilitadoadmin = $r->__get('habilitadoadmin');
+                                            <?php foreach ($model->listarPersonal() as $r):
+                                                $idpersonal = $r->__get('idpersonal');
+                                                $nombreperso = $r->__get('nombreperso');
+                                                $apellidoperso = $r->__get('apellidoperso');
+                                                $dniperso = $r->__get('dniperso');
+                                                $direccionperso = $r->__get('direccionperso');
+                                                $telefonoperso = $r->__get('telefonoperso');
+                                                $passwordperso = $r->__get('passwordperso');
+                                                $habilitadoperso = $r->__get('habilitadoperso');
                                             ?>
                                                 <tr>
-                                                    <td class="text-center align-middle"><?php echo $idadmin; ?></td>
-                                                    <td class="align-middle"><?php echo $nombreadmin; ?></td>
-                                                    <td class="align-middle"><?php echo $apellidoadmin; ?></td>
-                                                    <td class="align-middle"><?php echo $dniadmin; ?></td>
-                                                    <td class="align-middle text-center"><?php echo $direccionadmin; ?></td>
-                                                    <td class="align-middle text-center"><?php echo $telefonoadmin; ?></td>
-                                                    <td class="align-middle"><?php echo $passwordadmin; ?></td>
-                                                    <td class="align-middle"><?php echo $habilitadoadmin; ?></td>
+                                                    <td class="text-center align-middle"><?php echo $idpersonal; ?></td>
+                                                    <td class="align-middle"><?php echo $nombreperso; ?></td>
+                                                    <td class="align-middle"><?php echo $apellidoperso; ?></td>
+                                                    <td class="align-middle"><?php echo $dniperso; ?></td>
+                                                    <td class="align-middle text-center"><?php echo $direccionperso; ?></td>
+                                                    <td class="align-middle text-center"><?php echo $telefonoperso; ?></td>
+                                                    <td class="align-middle"><?php echo $passwordperso; ?></td>
+                                                    <td class="align-middle text-center"><?php echo $habilitadoperso; ?></td>
 
                                                     <td class="text-center align-middle">
                                                         <div class="d-flex justify-content-around align-items-stretch">
                                                             <form action="editcategoria.php" method="post">
-                                                                <input type="hidden" name="codigoproveedor" id="codigoproveedor" value="<?php echo $idadmin; ?>">
+                                                                <input type="hidden" name="codigoproveedor" id="codigoproveedor" value="<?php echo $idpersonal; ?>">
                                                                 <input type="submit" class="btn btn-info flex-fill mx-1" value="Editar">
                                                             </form>
                                                             <form action="dltcategoria.php" method="post">
-                                                                <input type="hidden" name="codigoproveedor" id="codigoproveedor" value="<?php echo $idadmin; ?>">
+                                                                <input type="hidden" name="codigoproveedor" id="codigoproveedor" value="<?php echo $idpersonal; ?>">
                                                                 <input type="submit" class="btn btn-danger flex-fill mx-1" value="Eliminar">
                                                             </form>
                                                         </div>

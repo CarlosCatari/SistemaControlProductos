@@ -45,9 +45,12 @@
                 die($e->getMessage());
             }
         }
+
+
         public function actualizarCategoria(Local $data){
             try {
                 $stm = "UPDATE Categoria SET titulocategoria = ? WHERE idcategoria = ?";
+                echo $stm;
                 $this->pdo->prepare($stm)->execute(array(
                     $data->__GET('titulocategoria'),
                     $data->__GET('idcategoria')
@@ -135,6 +138,7 @@
                 die($e->getMessage());
             }
         }
+        
 
 
 
@@ -250,6 +254,30 @@
                     $loc->__Set('telefonoadmin', $r->telefonoadmin);
                     $loc->__Set('passwordadmin', $r->passwordadmin);
                     $loc->__Set('habilitadoadmin', $r->habilitadoadmin);
+                    $result[] = $loc;
+                }
+                return $result;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
+
+        public function listarPersonal(){
+            try {
+                $result = array();
+                $stm = $this->pdo->prepare( 'SELECT * FROM Personal');
+                $stm->Execute();
+                foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r){
+                    $loc = new local();
+                    $loc->__Set('idpersonal', $r->idpersonal);
+                    $loc->__Set('nombreperso', $r->nombreperso);
+                    $loc->__Set('apellidoperso', $r->apellidoperso);
+                    $loc->__Set('dniperso', $r->dniperso);
+                    $loc->__Set('direccionperso', $r->direccionperso);
+                    $loc->__Set('telefonoperso', $r->telefonoperso);
+                    $loc->__Set('passwordperso', $r->passwordperso);
+                    $loc->__Set('habilitadoperso', $r->habilitadoperso);
                     $result[] = $loc;
                 }
                 return $result;

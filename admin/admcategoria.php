@@ -51,18 +51,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
     } elseif (isset($_POST['tokenedit']) && $_POST['tokenedit'] === $_SESSION['tokenedit']) {
-        // Editar una categoría
+        // Actualizacion de una categoría
         if (isset($_POST["modnamecat"])) {
-            $idcategoria = $_POST["modcodcat"];
-            $titulocategoria = $_POST["modnamecat"];
-        
+            $idcategorias = $_POST["modcodcat"];
+            $titulocategorias = $_POST["modnamecat"];
+
             $data = new Local();
-            $data->__set('idcategoria', $idcategoria);
-            $data->__set('titulocategoria', $titulocategoria);
-        
+            $data->__set('idcategoria', $idcategorias);
+            $data->__set('titulocategoria', $titulocategorias);
+
             $model->actualizarCategoria($data);
-            /* $category = strtoupper($titulocategoria);
-            $msjmodificacion = 'Categoria ' . $category . ' modificada correctamente.'; */
+            $edcategoria = strtoupper(string: $titulocategorias);
+            $_SESSION['msjeditcat'] = 'Categoría ' . $edcategoria . ' modificada correctamente.';
             header(header: 'Location: admcategoria.php');
             exit;
         }
@@ -73,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 ?>
 <?php echo $page->render();; ?>
+
 <body id="page-top">
     <div id="wrapper">
         <?php echo $NavVertical->renderNavbar(); ?>
@@ -156,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                         <tbody>
 
                                                             <?php
-                                                            $valorbusqueda = "Equipo";
+                                                            $valorbusqueda = "busqueda";
                                                             foreach ($model->buscarCategoria($valorbusqueda) as $r):
                                                                 $idcategoria = $r->__get('idcategoria');
                                                                 $categoria = $r->__get('titulocategoria');
@@ -207,8 +208,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                             <p>¿Estás seguro de que deseas eliminar la categoría:<br><strong><?php echo $categoria; ?></strong>?</p>
                                                                                         </div>
                                                                                         <div class="modal-footer">
-                                                                                            <form action="" method="post">
-                                                                                                
+                                                                                            <form action="#" method="post">
+
                                                                                                 <input type="hidden" name="cdcategoria" value="<?php echo $idcategoria; ?>">
                                                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                                                                                                 <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -263,7 +264,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </div>
                                     <?php unset($_SESSION['msjcategoria']); ?>
                                 <?php endif; ?>
-                                
+
                                 <?php if (!empty($_SESSION['msjdeletecat'])): ?>
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                         <?php echo htmlspecialchars($_SESSION['msjdeletecat']); ?>
@@ -274,7 +275,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <?php unset($_SESSION['msjdeletecat']); ?>
                                 <?php endif; ?>
 
-
+                                <?php if (!empty($_SESSION['msjeditcat'])): ?>
+                                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                        <?php echo htmlspecialchars($_SESSION['msjeditcat']); ?>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <?php unset($_SESSION['msjeditcat']); ?>
+                                <?php endif; ?>
 
 
                                 <div class="table-responsive">
@@ -310,12 +319,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                             </button>
                                                                         </div>
                                                                         <div class="modal-body">
-                                                                            <form action="admcategoria.php" id="FormEditCat" method="post" class="p-3">
+
+                                                                            <form action="admcategoria.php" id="FormEditCat<?php echo $idcategoria; ?>" method="post" class="p-3">
                                                                                 <div class="row mb-3">
-                                                                                    <div class="col-md-12 form-group text-left"> 
-                                                                                        <label for="modnamecat">Categoria</label>
+                                                                                    <div class="col-md-12 form-group text-left">
+                                                                                        <label for="modnamecat">Codigo:</label>
                                                                                         <input type="hidden" name="tokenedit" value="<?php echo $_SESSION['tokenedit']; ?>">
-                                                                                        <input type="text" name="modcodcat" value="<?php echo $idcategoria; ?>">
+                                                                                        <input type="text" name="modcodcat" class="form-control border-primary rounded-3" value="<?php echo $idcategoria; ?>" readonly>
+                                                                                    </div>
+
+                                                                                    <div class="col-md-12 form-group text-left">
+                                                                                        <label for="modnamecat">Categoria</label>
                                                                                         <input type="text" name="modnamecat" class="form-control border-primary rounded-3" value="<?php echo $categoria; ?>" placeholder="Titulo de categoria" pattern="[a-zA-Z\s]+" required>
                                                                                     </div>
                                                                                 </div>
@@ -323,7 +337,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                                            <button type="submit" form="FormEditCat" class="btn btn-primary">Guardar Cambios <?php echo $idcategoria; ?></button>
+                                                                            <button type="submit" form="FormEditCat<?php echo $idcategoria; ?>" class="btn btn-primary">Guardar Cambios</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
