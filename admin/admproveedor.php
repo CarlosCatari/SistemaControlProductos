@@ -234,10 +234,10 @@ if (isset($_POST["cdcategoria"])) {
     </div>
     <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
     
-    <script src="../source/jquery/jquery.min.js"></script>
     <script src="../source/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../source/jquery-easing/jquery.easing.min.js"></script>
-    <script src="../source/js/sb-admin-2.min.js"></script>
+    <script src="../source/bootstrap/js/sb-admin-2.min.js"></script>
+    <script src="../source/jquery/jquery.min.js"></script>
+    <script src="../source/jquery/jquery-easing/jquery.easing.min.js"></script>
 </body>
 
 </html>
