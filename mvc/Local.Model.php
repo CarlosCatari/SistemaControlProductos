@@ -123,6 +123,8 @@
                 die($e->getMessage());
             }
         }
+
+
         public function agregarProveedor(Local $data){
             try {
                 $stm = "INSERT INTO Proveedor (ruc,nombre,tipo, direccion, telefono, correo) VALUES (?,?,?,?,?,?)";
@@ -134,6 +136,14 @@
                     $data->__GET('telefono'),
                     $data->__GET('correo'),
                 ));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+        public function eliminarProveedor($idproveedor){
+            try{
+                $stm = $this->pdo->prepare("DELETE FROM Proveedor WHERE idproveedor = ?");
+                $stm->execute(array($idproveedor));
             } catch (Exception $e) {
                 die($e->getMessage());
             }
@@ -197,7 +207,14 @@
                 die($e->getMessage());
             }
         }
-
+        public function eliminarProducto($idproducto){
+            try{
+                $stm = $this->pdo->prepare("DELETE FROM Producto WHERE idproducto = ?");
+                $stm->execute(array($idproducto));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
 
 
         public function listarAdministrador(){

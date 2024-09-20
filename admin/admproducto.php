@@ -17,34 +17,54 @@ $NavVertical = new NavVertical();
 $NavHorizontal = new NavHorizontal($user);
 $page = new Head('Productos');
 
+// Inicializar los tokens si no están establecidos
 if (empty($_SESSION['token'])) {
-    $_SESSION['token'] = bin2hex(string: random_bytes(length:32));
+    $_SESSION['token'] = bin2hex(random_bytes(32));
 }
+if (empty($_SESSION['tokendlt'])) {
+    $_SESSION['tokendlt'] = bin2hex(random_bytes(32));
+}
+if (empty($_SESSION['tokenedit'])) {
+    $_SESSION['tokenedit'] = bin2hex(random_bytes(32));
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!isset($_POST['token']) || $_POST['token'] !== $_SESSION['token']) {
-        die('Token invalido');
-    }
-    if (isset($_POST["tituloprod"])) {
-        $tituloprod = $_POST["tituloprod"];
-        $categoriaprod = $_POST["categoriaprod"];
-        $descripcionprod = $_POST["descripcionprod"];
-        $precioprod = $_POST["precioprod"];
-        $stockprod = $_POST["stockprod"];
-        $proveedorprod = $_POST["proveedorprod"];
+    //  Agregar una Productos
+    if (isset($_POST['token']) && $_POST['token'] === $_SESSION['token']) {
+        if (isset($_POST["tituloprod"])) {
+            $tituloprod = $_POST["tituloprod"];
+            $categoriaprod = $_POST["categoriaprod"];
+            $descripcionprod = $_POST["descripcionprod"];
+            $precioprod = $_POST["precioprod"];
+            $stockprod = $_POST["stockprod"];
+            $proveedorprod = $_POST["proveedorprod"];
 
-        $data = new Local();
-        $data->__set('tituloproducto', $tituloprod);
-        $data->__set('categoria_id', $categoriaprod);
-        $data->__set('descripcion', $descripcionprod);
-        $data->__set('precio', $precioprod);
-        $data->__set('stock', $stockprod);
-        $data->__set('proveedor_id', $proveedorprod);
-        $model->agregarProducto($data);
+            $data = new Local();
+            $data->__set('tituloproducto', $tituloprod);
+            $data->__set('categoria_id', $categoriaprod);
+            $data->__set('descripcion', $descripcionprod);
+            $data->__set('precio', $precioprod);
+            $data->__set('stock', $stockprod);
+            $data->__set('proveedor_id', $proveedorprod);
+            $model->agregarProducto($data);
 
-        $newproducto = strtoupper($tituloprod);
-        $_SESSION['msjproducto'] = 'Producto ' . $newproducto . ' agregado correctamente.';
-        header(header: 'Location: admproducto.php');
-        exit;
+            $newproducto = strtoupper($tituloprod);
+            $_SESSION['msjaddprod'] = 'Producto ' . $newproducto . ' agregado correctamente.';
+            header(header: 'Location: admproducto.php');
+            exit;
+        }
+    // Eliminación de Productos
+    } elseif (isset($_POST['tokendlt']) && $_POST['tokendlt'] === $_SESSION['tokendlt']) {
+        if (isset($_POST['codigoprod'])) {
+            $idproducto = $_POST['codigoprod'];
+            $model->eliminarProducto(idproducto: $idproducto);
+            $_SESSION['msjdeleteprod'] = 'Producto eliminado correctamente.';
+            header(header: 'Location: admproducto.php');
+            exit;
+        }
+    } else {
+        die('Token inválido');
     }
 }
 ?>
@@ -156,15 +176,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div class="card-body">
                                 <!--------------------------- Alertas -------------------------->
-                                <?php if (!empty($_SESSION['msjproducto'])): ?>
+                                <?php if (!empty($_SESSION['msjaddprod'])): ?>
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <?php echo htmlspecialchars($_SESSION['msjproducto']); ?>
+                                        <?php echo htmlspecialchars($_SESSION['msjaddprod']); ?>
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <?php unset($_SESSION['msjproducto']); ?>
+                                    <?php unset($_SESSION['msjaddprod']); ?>
                                 <?php endif; ?>
+
+                                <?php if (!empty($_SESSION['msjdeleteprod'])): ?>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <?php echo htmlspecialchars($_SESSION['msjdeleteprod']); ?>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <?php unset($_SESSION['msjdeleteprod']); ?>
+                                <?php endif; ?>
+
+                                <!-- <?php if (!empty($_SESSION['msjeditcat'])): ?>
+                                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                        <?php echo htmlspecialchars($_SESSION['msjeditcat']); ?>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <?php unset($_SESSION['msjeditcat']); ?>
+                                <?php endif; ?> -->
+
+
+
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
@@ -200,14 +243,117 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                                     <td class="text-center align-middle">
                                                         <div class="d-flex justify-content-around align-items-stretch">
-                                                            <form action="editcategoria.php" method="post">
-                                                                <input type="hidden" name="codigoproveedor" id="codigoproveedor" value="<?php echo $idproveedor; ?>">
-                                                                <input type="submit" class="btn btn-info flex-fill mx-1" value="Editar">
-                                                            </form>
-                                                            <form action="dltcategoria.php" method="post">
-                                                                <input type="hidden" name="codigoproveedor" id="codigoproveedor" value="<?php echo $idproveedor; ?>">
-                                                                <input type="submit" class="btn btn-danger flex-fill mx-1" value="Eliminar">
-                                                            </form>
+                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?php echo $idproducto; ?>">Editar</button>
+                                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?php echo $idproducto; ?>">Eliminar</button>
+
+                                                            <!---------- Modal Editar Producto ---------->
+                                                            <div class="modal fade" id="editModal<?php echo $idproducto; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $idproducto; ?>" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="editModalLabel<?php echo $idproducto; ?>">Editar Producto</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+
+                                                                            <form action="admproducto.php" id="FormEditCat<?php echo $idproducto; ?>" method="post" class="p-3">
+                                                                                <div class="container-fluid">
+
+                                                                                    <div class="mb-2 form-group text-left">
+                                                                                        <input type="hidden" name="token" value="<?php echo htmlspecialchars(string: $_SESSION['token']); ?>">
+                                                                                        <label for="tituloprod" class="mb-0 mt-1">Producto:</label>
+                                                                                        <input type="text" name="tituloprod" id="tituloprod" class="form-control border-primary rounded-3" value="<?php echo $tituloproducto; ?>" placeholder="Titulo del producto" required>
+                                                                                        
+                                                                                    </div>
+
+                                                                                    <div class="mb-2 form-group text-left">
+                                                                                        <label for="categoriaprod" class="mb-0 mt-1">Categoria</label>
+                                                                                        <select class="form-control border-primary rounded-3" name="categoriaprod" id="categoriaprod" aria-label="Default select example">
+                                                                                            <option value="" disabled selected>Seleccionar Categoria</option>
+                                                                                            <?php foreach ($model->listarCategoria() as $r):
+                                                                                                $idcategoria = $r->__get('idcategoria');
+                                                                                                $categoria = $r->__get('titulocategoria');
+                                                                                            ?>
+                                                                                            <option value="<?php echo $idcategoria; ?>">
+                                                                                                <?php echo $categoria; ?>
+                                                                                            </option>
+                                                                                            <?php endforeach; ?>
+                                                                                        </select>
+                                                                                    </div>
+
+                                                                                    <div class="mb-2 form-group text-left">
+                                                                                        <label for="descripcionprod" class="form-label">Descripción:</label>
+                                                                                        <textarea class="form-control border-primary rounded-3" name="descripcionprod" id="descripcionprod" placeholder="Breve descripción del producto" rows="3"><?php echo $descripcion; ?></textarea>
+                                                                                    </div>
+                                                                                    <div class="mb-2 form-group text-left d-flex">
+                                                                                        <div class="col-6 pl-0">
+                                                                                            <label for="precioprod" class="form-label">Precio:</label>
+                                                                                            <input type="text" name="precioprod" id="precioprod" class="form-control border-primary rounded-3" value="<?php echo $precio; ?>" placeholder="S/. 00.00" required>
+                                                                                        </div>
+                                                                                        <div class="col-6 p-0">
+                                                                                            <label for="stockprod" class="form-label">Stock:</label>
+                                                                                            <input type="text" name="stockprod" id="stockprod"  class="form-control border-primary rounded-3" value="<?php echo $stock; ?>" placeholder="Cantidad en almacén" required>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="mb-2 form-group text-left">
+                                                                                        <label for="proveedorprod" class="mb-0 mt-1">Proveedor:</label>
+                                                                                        <select class="form-control border-primary rounded-3" name="proveedorprod" id="proveedorprod" aria-label="Default select example">
+                                                                                            <option value="" disabled selected>Seleccionar Proveedor</option>
+                                                                                            <?php foreach ($model->listarProveedor() as $r):
+                                                                                                $idproveedor = $r->__get('idproveedor');
+                                                                                                $nombreproveedor = $r->__get('nombre');
+                                                                                            ?>
+                                                                                            <option value="<?php echo $idproveedor; ?>">
+                                                                                                <?php echo $nombreproveedor; ?>
+                                                                                            </option>
+                                                                                            <?php endforeach; ?>
+                                                                                        </select>
+                                                                                    </div>
+
+                                                        
+
+
+
+
+
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                                            <button type="submit" form="FormEditCat<?php echo $idproveedor; ?>" class="btn btn-primary">Guardar Cambios</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!---------- Modal Eliminar Producto ---------->
+                                                            <div class="modal fade" id="deleteModal<?php echo $idproducto; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel<?php echo $idproducto; ?>" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="deleteModalLabel<?php echo $idproducto; ?>">Confirmar Eliminación</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <p>¿Estás seguro de que deseas eliminar este Proveedor:<br><strong><?php echo $tituloproducto; ?></strong>?</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <form action="admproducto.php" method="post">
+                                                                                <input type="hidden" name="tokendlt" value="<?php echo $_SESSION['tokendlt']; ?>">
+                                                                                <input type="hidden" name="codigoprod" value="<?php echo $idproducto; ?>">
+                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                     </td>
                                                 </tr>

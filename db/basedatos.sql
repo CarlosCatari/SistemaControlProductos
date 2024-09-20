@@ -24,7 +24,7 @@ CREATE TABLE Personal (
     passwordperso VARCHAR(255) NOT NULL,
     habilitadoperso INT(2)NOT NULL
 );
-INSERT INTO Administrador (nombreperso, apellidoperso, dniperso, direccionperso, telefonoperso, passwordperso, habilitadoperso) VALUES
+INSERT INTO Personal (nombreperso, apellidoperso, dniperso, direccionperso, telefonoperso, passwordperso, habilitadoperso) VALUES
 ('Sebastian', 'Santos Paz', '70457740', 'Av. Arequipa 500','987654561', 'sebas123', '1'),
 ('Gabriel', 'Coaquira Santos', "84598652", 'Av. Bustamante 1220', '986589154', 'gabriel123', '0');
 
