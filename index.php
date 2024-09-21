@@ -13,49 +13,37 @@
         $_SESSION['contador'] = 0;
     }
     $error = '';
-
-    if(isset($_POST["username"])) {
-        /* $verificador = false; */
+    
+    if (isset($_POST["username"]) && isset($_POST["password"])) {
         $verificadoradmin = false;
-        /* foreach ($model->buscarCliente($_REQUEST['username']) as $r) { 
-            $user = $_POST['username'];
-            $pass = $_POST['password'];
-            $dbuser = $r->__get('dni');
-            $dbpwd = $r->__get('pwd');
-            $dbnombre = $r->__get('nombre');
-        
-            if ($user === $dbuser && $pass === $dbpwd) {
-                $_SESSION['username'] = $dbnombre;
-                $_SESSION['dni'] = $dbuser;
-                $verificador = true;
-                break;
-            }
-        } */
-        foreach ($model->buscarUserAdmin($_REQUEST['username']) as $r) { 
-            $useradmin = $_POST['username'];
-            $passadmin = $_POST['password'];
+        $useradmin = $_POST['username'];
+        $passadmin = $_POST['password'];
+    
+        // Simulamos la función de búsqueda en el modelo
+        foreach ($model->buscarUserAdmin($useradmin) as $r) {
             $dbuseradmin = $r->__get('dniadmin');
             $dbpwdadmin = $r->__get('passwordadmin');
             $idadmin = $r->__get('idadmin');
-        
-            if ($useradmin === $dbuseradmin && $passadmin === $dbpwdadmin) {
+            $habilitadoadmin = $r->__get('habilitadoadmin');
+    
+            if ($useradmin === $dbuseradmin && $passadmin === $dbpwdadmin && $habilitadoadmin == 1) {
                 $_SESSION['idadmin'] = $idadmin;
                 $verificadoradmin = true;
                 break;
             }
         }
-        
-        if ($verificador) {
-            header('Location: personal/personalpanel.php');
-        } elseif($verificadoradmin){
-            header('Location: admin/dashboard.php');
+    
+        if ($verificadoradmin) {
+            header('Location: admin/dashboard.php'); // Redirigir al menú de control
+            exit();
         } else {
             $_SESSION['contador']++;
             if ($_SESSION['contador'] < 4) {
-                $error = "Usuario o contraseña incorrectos. Te quedan ".(4 - $_SESSION['contador']) ." intentos";
+                $error = "Usuario o contraseña incorrectos. Te quedan " . (4 - $_SESSION['contador']) . " intentos.";
             } else {
-                header('Location: error.php');
-                $_SESSION['contador'] = 0;
+                header('Location: error.php'); // Redirigir a la página de error
+                $_SESSION['contador'] = 0; // Resetear el contador
+                exit();
             }
         }
     }
@@ -96,19 +84,9 @@
                 </div>
                 <input class="form-control" name="password" type="password" placeholder="Escribe tu contraseña" pattern="[a-zA-Z0-9]+" required>
             </div>
-            <div class="d-flex justify-content-around mt-1">
-                <div class="d-flex align-items-center gap-1">
-                    <input class="form-check-input" type="checkbox">
-                    <div class="pt-1" style="font-size:0.9rem">Recordar</div>
-                </div>
-                <div class="pt-1">
-                    <a class="text-decoration-none text-primary fw-semibold fst-italics" style="font-size:0.9rem" href="#">¿No recuerdas tu contraseña?</a>
-                </div>
-            </div>
             <button type="submit" class="btn btn-primary text-white w-100 mt-4">Ingresar</button>
             <div class="d-flex gap-1 justify-content-center mt-1">
-                <div>¿No tienes usuario y contraseña?</div>
-                <a class="text-decoration-none text-primary fw-semibold" href="registro.php">Registrar</a>
+                <a class="text-decoration-none text-primary fw-semibold" href="registro.php">¿Olvidaste la contraseña?</a>
             </div>
         </div>
     </form>

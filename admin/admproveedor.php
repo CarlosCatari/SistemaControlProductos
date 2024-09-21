@@ -101,28 +101,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <form action="admproveedor.php" id="FormAddProv" method="post" class="px-3">
                                                     <div class="row mb-1">
                                                         <div class="col-md-12 form-group text-left">
-                                                            
                                                             <label for="rucprove" class="mb-0 mt-1">RUC:</label>
                                                             <input type="text" name="rucprove" id="rucprove" class="form-control border-primary rounded-3" placeholder="RUC" required>
                                                             <input type="hidden" name="token" value="<?php echo htmlspecialchars(string: $_SESSION['token']); ?>">
-
                                                             <label for="nombreprove" class="mb-0 mt-1">Empresa/Representante:</label>
                                                             <input type="text" name="nombreprove" id="nombreprove" class="form-control border-primary rounded-3" placeholder="Empresa o Representante"  required>
-
-                                                            
-
                                                             <label for="tipoprove" class="mb-0 mt-1">Tipo:</label>
                                                             <input type="text" name="tipoprove" id="tipoprove" class="form-control border-primary rounded-3" placeholder="Tipo o rubro" required>
-
                                                             <label for="direccionprove" class="mb-0 mt-1">Dirección:</label>
                                                             <input type="text" name="direccionprove" id="direccionprove" class="form-control border-primary rounded-3" placeholder="Dirección actual"  required>
-
                                                             <label for="telefonoprove" class="mb-0 mt-1">Telefono:</label>
                                                             <input type="text" name="telefonoprove" id="telefonoprove" class="form-control border-primary rounded-3" placeholder="Telefono" required>
-
                                                             <label for="correoprove" class="mb-0 mt-1">Correo:</label>
                                                             <input type="text" name="correoprove" id="correoprove" class="form-control border-primary rounded-3" placeholder="Correo" required>
-
                                                         </div>
                                                     </div>
                                                 </form>
@@ -134,9 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </div>
                                     </div>
                                 </div>
-
-
-
 
                                 <form class="d-inline-block form-inline ml-auto mw-100 navbar-search">
                                     <div class="input-group">
@@ -179,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <?php unset($_SESSION['msjdeleteprov']); ?>
                                 <?php endif; ?>
 
-                                <!-- <?php if (!empty($_SESSION['msjeditcat'])): ?>
+                                <?php if (!empty($_SESSION['msjeditcat'])): ?>
                                     <div class="alert alert-primary alert-dismissible fade show" role="alert">
                                         <?php echo htmlspecialchars($_SESSION['msjeditcat']); ?>
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -187,8 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </button>
                                     </div>
                                     <?php unset($_SESSION['msjeditcat']); ?>
-                                <?php endif; ?> -->
-
+                                <?php endif; ?>
 
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

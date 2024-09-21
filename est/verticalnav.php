@@ -35,6 +35,11 @@ class NavVertical {
                 "text" => "Categorías"
             ],
             [
+                "href" => "consultas.php",
+                "icon" => "fas fa-fw fa-solid fa-clipboard",
+                "text" => "Consultas"
+            ],
+            [
                 "href" => "../index.php",
                 "icon" => "fas fa-fw fa-solid fa-door-open",
                 "text" => "Cerrar Sesión"

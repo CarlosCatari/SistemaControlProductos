@@ -249,6 +249,7 @@
                     $loc->__Set('dniadmin', $r->dniadmin);
                     $loc->__Set('passwordadmin', $r->passwordadmin);
                     $loc->__Set('idadmin', $r->idadmin);
+                    $loc->__Set('habilitadoadmin', $r->habilitadoadmin);
                     $result[] = $loc;
                 }
                 return $result;
@@ -278,7 +279,48 @@
                 die($e->getMessage());
             }
         }
-
+        public function agregarAdministrador(Local $data){
+            try {
+                $stm = "INSERT INTO Administrador (nombreadmin, apellidoadmin, dniadmin, direccionadmin, telefonoadmin, passwordadmin, habilitadoadmin) VALUES (?,?,?,?,?,?,?)";
+                $this->pdo->prepare($stm)->execute(array(
+                    $data->__GET('nombreadmin'),
+                    $data->__GET('apellidoadmin'),
+                    $data->__GET('dniadmin'),
+                    $data->__GET('direccionadmin'),
+                    $data->__GET('telefonoadmin'),
+                    $data->__GET('passwordadmin'),
+                    $data->__GET('habilitadoadmin'),
+                ));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+        public function actualizarAdministrador(Local $data){
+            try {
+                $stm = "UPDATE Administrador SET nombreadmin = ?, apellidoadmin = ?, dniadmin = ?, direccionadmin = ?, telefonoadmin = ?, passwordadmin = ?, habilitadoadmin = ? WHERE idadmin = ?";
+                echo $stm;
+                $this->pdo->prepare($stm)->execute(array(
+                    $data->__GET('nombreadmin'),
+                    $data->__GET('apellidoadmin'),
+                    $data->__GET('dniadmin'),
+                    $data->__GET('direccionadmin'),
+                    $data->__GET('telefonoadmin'),
+                    $data->__GET('passwordadmin'),
+                    $data->__GET('habilitadoadmin'),
+                    $data->__GET('idadmin')
+                ));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+        public function eliminarAdministrador($idadmin){
+            try{
+                $stm = $this->pdo->prepare("DELETE FROM Administrador WHERE idadmin = ?");
+                $stm->execute(array($idadmin));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
 
         public function listarPersonal(){
             try {

@@ -118,8 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </div>
                                 </div>
 
-
-
+                                <!-- Formulario de Busqueda -->
                                 <form class="d-inline-block form-inline ml-auto mw-100 navbar-search">
                                     <div class="input-group">
                                         <input id="searchData" name="searchData" type="text" class="form-control bg-light border-0 small" placeholder="Buscar Categoria" aria-label="Search" aria-describedby="basic-addon2">
@@ -130,8 +129,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </div>
                                     </div>
                                 </form>
-
-
 
                                 <!---------- Modal Buscar Categoría ---------->
                                 <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
@@ -149,13 +146,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                                         <thead>
                                                             <tr>
-                                                                <th class="col-1 text-center align-middle">Cod.</th>
+                                                                <th class="col-1 text-center align-middle">Codigo</th>
                                                                 <th class="col-8 text-center align-middle">Categoria</th>
-                                                                <th class="col-3 text-center align-middle">Acciones</th>
+                                                                <!-- <th class="col-3 text-center align-middle">Acciones</th> -->
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-
                                                             <?php
                                                             $valorbusqueda = "busqueda";
                                                             foreach ($model->buscarCategoria($valorbusqueda) as $r):
@@ -165,61 +161,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                 <tr>
                                                                     <td class="text-center align-middle"><?php echo $idcategoria; ?></td>
                                                                     <td class="align-middle"><?php echo $categoria; ?></td>
-                                                                    <td class="text-center align-middle">
-                                                                        <div class="d-flex justify-content-around align-items-stretch">
-                                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?php echo $idcategoria; ?>">Editar</button>
-                                                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?php echo $idcategoria; ?>">Eliminar</button>
-                                                                            <div class="modal fade" id="editModal<?php echo $idcategoria; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $idcategoria; ?>" aria-hidden="true">
-                                                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                                                    <div class="modal-content">
-                                                                                        <div class="modal-header">
-                                                                                            <h5 class="modal-title" id="editModalLabel<?php echo $idcategoria; ?>">Editar Categoria</h5>
-                                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                                <span aria-hidden="true">&times;</span>
-                                                                                            </button>
-                                                                                        </div>
-                                                                                        <div class="modal-body">
-                                                                                            <form action="#" method="post" class="p-3">
-                                                                                                <div class="row mb-3">
-                                                                                                    <div class="col-md-12 form-group text-left">
-                                                                                                        <label for="namecategoria">Categoria</label>
-                                                                                                        <input type="text" name="namecategoria" class="form-control border-primary rounded-3" value="<?php echo $categoria; ?>" placeholder="Titulo de categoria" pattern="[a-zA-Z\s]+" required>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </form>
-                                                                                        </div>
-                                                                                        <div class="modal-footer">
-                                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                                                            <button type="button" class="btn btn-primary">Guardar Cambios</button>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="modal fade" id="deleteModal<?php echo $idcategoria; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel<?php echo $idcategoria; ?>" aria-hidden="true">
-                                                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                                                    <div class="modal-content">
-                                                                                        <div class="modal-header">
-                                                                                            <h5 class="modal-title" id="deleteModalLabel<?php echo $idcategoria; ?>">Confirmar Eliminación</h5>
-                                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                                <span aria-hidden="true">&times;</span>
-                                                                                            </button>
-                                                                                        </div>
-                                                                                        <div class="modal-body">
-                                                                                            <p>¿Estás seguro de que deseas eliminar la categoría:<br><strong><?php echo $categoria; ?></strong>?</p>
-                                                                                        </div>
-                                                                                        <div class="modal-footer">
-                                                                                            <form action="#" method="post">
-
-                                                                                                <input type="hidden" name="cdcategoria" value="<?php echo $idcategoria; ?>">
-                                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                                                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                                                                                            </form>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
                                                                 </tr>
                                                             <?php endforeach; ?>
                                                         </tbody>
@@ -232,7 +173,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </div>
                                     </div>
                                 </div>
-
                                 <script>
                                     function copiarvalores() {
                                         var labelValue1 = document.getElementById('searchData').value;
@@ -242,8 +182,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         copiarvalores();
                                     });
                                 </script>
-
-
                             </div>
                         </div>
                     </div>
@@ -284,7 +222,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </div>
                                     <?php unset($_SESSION['msjeditcat']); ?>
                                 <?php endif; ?>
-
 
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

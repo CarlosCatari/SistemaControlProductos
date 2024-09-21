@@ -196,7 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <?php unset($_SESSION['msjdeleteprod']); ?>
                                 <?php endif; ?>
 
-                                <!-- <?php if (!empty($_SESSION['msjeditcat'])): ?>
+                                <?php if (!empty($_SESSION['msjeditcat'])): ?>
                                     <div class="alert alert-primary alert-dismissible fade show" role="alert">
                                         <?php echo htmlspecialchars($_SESSION['msjeditcat']); ?>
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -204,9 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </button>
                                     </div>
                                     <?php unset($_SESSION['msjeditcat']); ?>
-                                <?php endif; ?> -->
-
-
+                                <?php endif; ?>
 
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -311,13 +309,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                             <?php endforeach; ?>
                                                                                         </select>
                                                                                     </div>
-
-                                                        
-
-
-
-
-
                                                                                 </div>
                                                                             </form>
                                                                         </div>
