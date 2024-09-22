@@ -16,10 +16,10 @@
     
     if (isset($_POST["username"]) && isset($_POST["password"])) {
         $verificadoradmin = false;
+        $verificadorpersonal = false;
         $useradmin = $_POST['username'];
         $passadmin = $_POST['password'];
     
-        // Simulamos la función de búsqueda en el modelo
         foreach ($model->buscarUserAdmin($useradmin) as $r) {
             $dbuseradmin = $r->__get('dniadmin');
             $dbpwdadmin = $r->__get('passwordadmin');
@@ -32,17 +32,32 @@
                 break;
             }
         }
+        foreach ($model->buscarUserPersonal($useradmin) as $r) {
+            $dbuserper = $r->__get('dniperso');
+            $dbpwdper = $r->__get('passwordperso');
+            $idpersonal = $r->__get('idpersonal');
+            $habilitadoperso = $r->__get('habilitadoperso');
+    
+            if ($useradmin === $dbuserper && $passadmin === $dbpwdper && $habilitadoperso == 1) {
+                $_SESSION['idpersonal'] = $idpersonal;
+                $verificadorpersonal = true;
+                break;
+            }
+        }
     
         if ($verificadoradmin) {
-            header('Location: admin/dashboard.php'); // Redirigir al menú de control
+            header('Location: admin/dashboard.php');
             exit();
-        } else {
+        } else if ($verificadorpersonal) {
+            header('Location: pages/dashboard.php');
+            exit();
+        }else {
             $_SESSION['contador']++;
             if ($_SESSION['contador'] < 4) {
                 $error = "Usuario o contraseña incorrectos. Te quedan " . (4 - $_SESSION['contador']) . " intentos.";
             } else {
-                header('Location: error.php'); // Redirigir a la página de error
-                $_SESSION['contador'] = 0; // Resetear el contador
+                header('Location: error.php');
+                $_SESSION['contador'] = 0;
                 exit();
             }
         }

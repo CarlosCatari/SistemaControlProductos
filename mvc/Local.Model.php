@@ -415,5 +415,45 @@
                 die($e->getMessage());
             }
         }
+        public function buscarUserPersonal($dniperso){
+            try {
+                $result = array();
+                $stm = $this->pdo->prepare( 'SELECT * FROM Personal WHERE dniperso = '.$dniperso);
+                $stm->Execute();
+                foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r){
+                    $loc = new local();
+                    $loc->__Set('dniperso', $r->dniperso);
+                    $loc->__Set('passwordperso', $r->passwordperso);
+                    $loc->__Set('idpersonal', $r->idpersonal);
+                    $loc->__Set('habilitadoperso', $r->habilitadoperso);
+                    $result[] = $loc;
+                }
+                return $result;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+        public function buscarIdPersonal($idpersonal){
+            try {
+                $result = array();
+                $stm = $this->pdo->prepare( 'SELECT * FROM Personal WHERE idpersonal = '.$idpersonal);
+                $stm->Execute();
+                foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r){
+                    $loc = new local();
+                    $loc->__Set('idpersonal', $r->idpersonal);
+                    $loc->__Set('nombreperso', $r->nombreperso);
+                    $loc->__Set('apellidoperso', $r->apellidoperso);
+                    $loc->__Set('dniperso', $r->dniperso);
+                    $loc->__Set('direccionperso', $r->direccionperso);
+                    $loc->__Set('telefonoperso', $r->telefonoperso);
+                    $loc->__Set('passwordperso', $r->passwordperso);
+                    $loc->__Set('habilitadoperso', $r->habilitadoperso);
+                    $result[] = $loc;
+                }
+                return $result;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
     }
 ?>
