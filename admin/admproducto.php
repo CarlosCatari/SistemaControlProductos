@@ -63,9 +63,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header(header: 'Location: admproducto.php');
             exit;
         }
+    }  elseif (isset($_POST['tokenedit']) && $_POST['tokenedit'] === $_SESSION['tokenedit']) {
+        // Actualizacion Producto
+        if (isset($_POST["modcodpro"])) {
+            $idproducto = $_POST["modcodpro"];
+            $titulopro = $_POST["titulopro"];
+            $categoriapro = $_POST["categoriapro"];
+            $descripcionpro = $_POST["descripcionpro"];
+            $preciopro = $_POST["preciopro"];
+            $stockpro = $_POST["stockpro"];
+            $proveedorpro = $_POST["proveedorpro"];
+
+            $data = new Local();
+            $data->__set('idproducto', $idproducto);
+            $data->__set('tituloproducto', $titulopro);
+            $data->__set('categoria_id', $categoriapro);
+            $data->__set('descripcion', $descripcionpro);
+            $data->__set('precio', $preciopro);
+            $data->__set('stock', $stockpro);
+            $data->__set('proveedor_id', $proveedorpro);
+
+            $model->actualizarProducto($data);
+            $editprod = strtoupper($titulopro);
+            $_SESSION['msjeditpro'] = 'Producto ' . $editprod . ' modificado correctamente.';
+            header(header: 'Location: admproducto.php');
+            exit;
+        }
     } else {
         die('Token inválido');
     }
+
 }
 ?>
 
@@ -100,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                         <div class="col-md-12 form-group text-left">
                                                             <label for="tituloprod" class="mb-0 mt-1">Producto:</label>
                                                             <input type="text" name="tituloprod" id="tituloprod" class="form-control border-primary rounded-3" placeholder="Titulo del producto" required>
-                                                            <input type="hidden" name="token" value="<?php echo htmlspecialchars(string: $_SESSION['token']); ?>">
+                                                            <input type="hidden" name="token" value="<?php echo htmlspecialchars($_SESSION['token']); ?>">
 
                                                             <label for="categoriaprod" class="mb-0 mt-1">Categoria</label>
                                                             <select class="form-control border-primary rounded-3" name="categoriaprod" id="categoriaprod" aria-label="Default select example">
@@ -196,14 +223,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <?php unset($_SESSION['msjdeleteprod']); ?>
                                 <?php endif; ?>
 
-                                <?php if (!empty($_SESSION['msjeditcat'])): ?>
+                                <?php if (!empty($_SESSION['msjeditpro'])): ?>
                                     <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                                        <?php echo htmlspecialchars($_SESSION['msjeditcat']); ?>
+                                        <?php echo htmlspecialchars($_SESSION['msjeditpro']); ?>
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <?php unset($_SESSION['msjeditcat']); ?>
+                                    <?php unset($_SESSION['msjeditpro']); ?>
                                 <?php endif; ?>
 
                                 <div class="table-responsive">
@@ -238,7 +265,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <td class="align-middle text-center"><?php echo $precio; ?></td>
                                                     <td class="align-middle text-center"><?php echo $stock; ?></td>
                                                     <td class="align-middle"><?php echo $proveedor; ?></td>
-
                                                     <td class="text-center align-middle">
                                                         <div class="d-flex justify-content-around align-items-stretch">
                                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?php echo $idproducto; ?>">Editar</button>
@@ -260,51 +286,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                 <div class="container-fluid">
 
                                                                                     <div class="mb-2 form-group text-left">
-                                                                                        <input type="hidden" name="token" value="<?php echo htmlspecialchars(string: $_SESSION['token']); ?>">
-                                                                                        <label for="tituloprod" class="mb-0 mt-1">Producto:</label>
-                                                                                        <input type="text" name="tituloprod" id="tituloprod" class="form-control border-primary rounded-3" value="<?php echo $tituloproducto; ?>" placeholder="Titulo del producto" required>
+                                                                                        <input type="hidden" name="tokenedit" value="<?php echo htmlspecialchars(string: $_SESSION['tokenedit']); ?>">
+                                                                                        <input type="text" name="modcodpro" value="<?php echo $idproducto; ?>">
+
+                                                                                        <label for="titulopro" class="mb-0 mt-1">Producto:</label>
+
+                                                                                        <input type="text" name="titulopro" id="titulopro" class="form-control border-primary rounded-3" value="<?php echo $tituloproducto; ?>" placeholder="Titulo del producto" required>
                                                                                         
                                                                                     </div>
 
                                                                                     <div class="mb-2 form-group text-left">
-                                                                                        <label for="categoriaprod" class="mb-0 mt-1">Categoria</label>
-                                                                                        <select class="form-control border-primary rounded-3" name="categoriaprod" id="categoriaprod" aria-label="Default select example">
-                                                                                            <option value="" disabled selected>Seleccionar Categoria</option>
-                                                                                            <?php foreach ($model->listarCategoria() as $r):
-                                                                                                $idcategoria = $r->__get('idcategoria');
-                                                                                                $categoria = $r->__get('titulocategoria');
-                                                                                            ?>
-                                                                                            <option value="<?php echo $idcategoria; ?>">
-                                                                                                <?php echo $categoria; ?>
-                                                                                            </option>
-                                                                                            <?php endforeach; ?>
+                                                                                        <label for="categoriapro" class="mb-0 mt-1">Categoria</label>
+                                                                                        <select class="form-control border-primary rounded-3" name="categoriapro" id="categoriapro" aria-label="Default select example">
+                                                                                        <option value="" disabled>Seleccionar Categoria</option>
+                                                                                        <?php foreach ($model->listarCategoria() as $r):
+                                                                                            $idcat = $r->__get('idcategoria');
+                                                                                            $titulocat = $r->__get('titulocategoria');
+                                                                                        ?>
+                                                                                        <option value="<?php echo $idcat; ?>" <?php echo ($titulocat == $categoria) ? 'selected' : ''; ?>>
+                                                                                            <?php echo $titulocat;?>
+                                                                                        </option>
+                                                                                        <?php endforeach; ?>
                                                                                         </select>
                                                                                     </div>
 
                                                                                     <div class="mb-2 form-group text-left">
-                                                                                        <label for="descripcionprod" class="form-label">Descripción:</label>
-                                                                                        <textarea class="form-control border-primary rounded-3" name="descripcionprod" id="descripcionprod" placeholder="Breve descripción del producto" rows="3"><?php echo $descripcion; ?></textarea>
+                                                                                        <label for="descripcionpro" class="form-label">Descripción:</label>
+                                                                                        <textarea class="form-control border-primary rounded-3" name="descripcionpro" id="descripcionpro" placeholder="Breve descripción del producto" rows="3"><?php echo $descripcion; ?></textarea>
                                                                                     </div>
                                                                                     <div class="mb-2 form-group text-left d-flex">
                                                                                         <div class="col-6 pl-0">
-                                                                                            <label for="precioprod" class="form-label">Precio:</label>
-                                                                                            <input type="text" name="precioprod" id="precioprod" class="form-control border-primary rounded-3" value="<?php echo $precio; ?>" placeholder="S/. 00.00" required>
+                                                                                            <label for="preciopro" class="form-label">Precio:</label>
+                                                                                            <input type="text" name="preciopro" id="preciopro" class="form-control border-primary rounded-3" value="<?php echo $precio; ?>" placeholder="S/. 00.00" required>
                                                                                         </div>
                                                                                         <div class="col-6 p-0">
-                                                                                            <label for="stockprod" class="form-label">Stock:</label>
-                                                                                            <input type="text" name="stockprod" id="stockprod"  class="form-control border-primary rounded-3" value="<?php echo $stock; ?>" placeholder="Cantidad en almacén" required>
+                                                                                            <label for="stockpro" class="form-label">Stock:</label>
+                                                                                            <input type="text" name="stockpro" id="stockpro"  class="form-control border-primary rounded-3" value="<?php echo $stock; ?>" placeholder="Cantidad en almacén" required>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="mb-2 form-group text-left">
-                                                                                        <label for="proveedorprod" class="mb-0 mt-1">Proveedor:</label>
-                                                                                        <select class="form-control border-primary rounded-3" name="proveedorprod" id="proveedorprod" aria-label="Default select example">
-                                                                                            <option value="" disabled selected>Seleccionar Proveedor</option>
+                                                                                        <label for="proveedorpro" class="mb-0 mt-1">Proveedor:</label>
+                                                                                        <select class="form-control border-primary rounded-3" name="proveedorpro" id="proveedorpro" aria-label="Default select example">
+                                                                                            <option value="" disabled>Seleccionar Proveedor</option>
                                                                                             <?php foreach ($model->listarProveedor() as $r):
-                                                                                                $idproveedor = $r->__get('idproveedor');
-                                                                                                $nombreproveedor = $r->__get('nombre');
+                                                                                                $idpro = $r->__get('idproveedor');
+                                                                                                $nombrepro = $r->__get('nombre');
                                                                                             ?>
-                                                                                            <option value="<?php echo $idproveedor; ?>">
-                                                                                                <?php echo $nombreproveedor; ?>
+                                                                                            <option value="<?php echo $idpro; ?>" <?php echo ($nombrepro == $proveedor) ? 'selected' : ''; ?>>
+                                                                                                <?php echo $nombrepro; ?>
                                                                                             </option>
                                                                                             <?php endforeach; ?>
                                                                                         </select>
@@ -314,7 +343,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                                            <button type="submit" form="FormEditCat<?php echo $idproveedor; ?>" class="btn btn-primary">Guardar Cambios</button>
+                                                                            <button type="submit" form="FormEditCat<?php echo $idproducto; ?>" class="btn btn-primary">Guardar Cambios</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>

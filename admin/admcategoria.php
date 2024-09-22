@@ -279,7 +279,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                     </div>
                                                                 </div>
                                                             </div>
-
+                                                            
                                                             <!---------- Modal Eliminar Categoría ---------->
                                                             <div class="modal fade" id="deleteModal<?php echo $idcategoria; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel<?php echo $idcategoria; ?>" aria-hidden="true">
                                                                 <div class="modal-dialog modal-dialog-centered" role="document">

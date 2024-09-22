@@ -65,6 +65,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header(header: 'Location: admproveedor.php');
             exit;
         }
+    } elseif (isset($_POST['tokenedit']) && $_POST['tokenedit'] === $_SESSION['tokenedit']) {
+        // Actualizacion de una categoría
+        if (isset($_POST["modcodprov"])) {
+            $idproveedor = $_POST["modcodprov"];
+            $rucprov = $_POST["rucprov"];
+            $nombreprov = $_POST["nombreprov"];
+            $tipoprov = $_POST["tipoprov"];
+            $direccionprov = $_POST["direccionprov"];
+            $telefonoprov = $_POST["telefonoprov"];
+            $correoprov = $_POST["correoprov"];
+
+            $data = new Local();
+            $data->__set('idproveedor', $idproveedor);
+            $data->__set('ruc', $rucprov);
+            $data->__set('nombre', $nombreprov);
+            $data->__set('tipo', $tipoprov);
+            $data->__set('direccion', $direccionprov);
+            $data->__set('telefono', $telefonoprov);
+            $data->__set('correo', $correoprov);
+
+            $model->actualizarProveedor($data);
+            $edproveedor = strtoupper($nombreprov);
+            $_SESSION['msjeditprov'] = 'Proveedor ' . $edproveedor . ' modificado correctamente.';
+            header(header: 'Location: admproveedor.php');
+            exit;
+        }
     } else {
         die('Token inválido');
     }
@@ -167,14 +193,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <?php unset($_SESSION['msjdeleteprov']); ?>
                                 <?php endif; ?>
 
-                                <?php if (!empty($_SESSION['msjeditcat'])): ?>
+                                <?php if (!empty($_SESSION['msjeditprov'])): ?>
                                     <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                                        <?php echo htmlspecialchars($_SESSION['msjeditcat']); ?>
+                                        <?php echo htmlspecialchars($_SESSION['msjeditprov']); ?>
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <?php unset($_SESSION['msjeditcat']); ?>
+                                    <?php unset($_SESSION['msjeditprov']); ?>
                                 <?php endif; ?>
 
                                 <div class="table-responsive">
@@ -231,35 +257,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                 <div class="container-fluid">
                                                                                     <div class="mb-2 form-group text-left d-flex">
                                                                                         <div class="col-6 m-0 pl-0">
-                                                                                            <label for="modcodcat">Codigo:</label>
                                                                                             <input type="hidden" name="tokenedit" value="<?php echo $_SESSION['tokenedit']; ?>">
-                                                                                            <input type="text" id="modcodcat" name="modcodcat" class="form-control border-primary rounded-3" value="<?php echo $idproveedor; ?>" readonly>
+                                                                                            <label for="modcodprov">Codigo:</label>
+                                                                                            <input type="text" id="modcodprov" name="modcodprov" class="form-control border-primary rounded-3" value="<?php echo $idproveedor; ?>" readonly>
                                                                                         </div>
                                                                                         <div class="col-6 m-0 p-0">
-                                                                                            <label for="rucprove">RUC:</label>
-                                                                                            <input type="text" name="rucprove" id="rucprove" class="form-control border-primary rounded-3" placeholder="RUC" required>
+                                                                                            <label for="rucprov">RUC:</label>
+                                                                                            <input type="text" name="rucprov" id="rucprov" class="form-control border-primary rounded-3" value="<?php echo $ruc; ?>" placeholder="RUC" required>
                                                                                         </div>
                                                                                     </div>
 
                                                                                     <div class="mb-2 form-group text-left">
-                                                                                        <label for="nombreprove" class="mb-0 mt-1">Empresa/Representante:</label>
-                                                                                        <input type="text" name="nombreprove" id="nombreprove" class="form-control border-primary rounded-3" placeholder="Empresa o Representante"  required>
+                                                                                        <label for="nombreprov" class="mb-0 mt-1">Empresa/Representante:</label>
+                                                                                        <input type="text" name="nombreprov" id="nombreprov" class="form-control border-primary rounded-3" value="<?php echo $nombre; ?>" placeholder="Empresa o Representante"  required>
                                                                                     </div>
                                                                                     <div class="mb-2 form-group text-left">
-                                                                                        <label for="tipoprove" class="mb-0 mt-1">Tipo:</label>
-                                                                                        <input type="text" name="tipoprove" id="tipoprove" class="form-control border-primary rounded-3" placeholder="Tipo o rubro" required>
+                                                                                        <label for="tipoprov" class="mb-0 mt-1">Tipo:</label>
+                                                                                        <input type="text" name="tipoprov" id="tipoprov" class="form-control border-primary rounded-3" value="<?php echo $tipo; ?>"  placeholder="Tipo o rubro" required>
                                                                                     </div>
                                                                                     <div class="mb-2 form-group text-left">
-                                                                                        <label for="direccionprove" class="mb-0 mt-1">Dirección:</label>
-                                                                                        <input type="text" name="direccionprove" id="direccionprove" class="form-control border-primary rounded-3" placeholder="Dirección actual"  required>
+                                                                                        <label for="direccionprov" class="mb-0 mt-1">Dirección:</label>
+                                                                                        <input type="text" name="direccionprov" id="direccionprov" class="form-control border-primary rounded-3" value="<?php echo $direccion; ?>"  placeholder="Dirección actual"  required>
                                                                                     </div>
                                                                                     <div class="mb-2 form-group text-left">
-                                                                                        <label for="telefonoprove" class="mb-0 mt-1">Telefono:</label>
-                                                                                        <input type="text" name="telefonoprove" id="telefonoprove" class="form-control border-primary rounded-3" placeholder="Telefono" required>
+                                                                                        <label for="telefonoprov" class="mb-0 mt-1">Telefono:</label>
+                                                                                        <input type="text" name="telefonoprov" id="telefonoprov" class="form-control border-primary rounded-3" value="<?php echo $telefono; ?>" placeholder="Telefono" required>
                                                                                     </div>
-                                                                                    <div class="mb-2 form-group text-left">                                                                          
-                                                                                        <label for="correoprove" class="mb-0 mt-1">Correo:</label>
-                                                                                        <input type="text" name="correoprove" id="correoprove" class="form-control border-primary rounded-3" placeholder="Correo" required>
+                                                                                    <div class="mb-2 form-group text-left">                          
+                                                                                        <label for="correoprov" class="mb-0 mt-1">Correo:</label>
+                                                                                        <input type="text" name="correoprov" id="correoprov" class="form-control border-primary rounded-3" value="<?php echo $correo; ?>" placeholder="Correo" required>
                                                                                     </div>
                                                                                 </div>
                                                                             </form>
@@ -272,7 +298,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                 </div>
                                                             </div>
 
-                                                            <!---------- Modal Eliminar Categoría ---------->
+                                                            <!---------- Modal Eliminar Proveedor ---------->
                                                             <div class="modal fade" id="deleteModal<?php echo $idproveedor; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel<?php echo $idproveedor; ?>" aria-hidden="true">
                                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                                     <div class="modal-content">

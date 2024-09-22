@@ -140,6 +140,23 @@
                 die($e->getMessage());
             }
         }
+        public function actualizarProveedor(Local $data){
+            try {
+                $stm = "UPDATE Proveedor SET ruc = ?, nombre = ?, tipo = ?, direccion = ?, telefono = ?, correo = ? WHERE idproveedor = ?";
+                echo $stm;
+                $this->pdo->prepare($stm)->execute(array(
+                    $data->__GET('ruc'),
+                    $data->__GET('nombre'),
+                    $data->__GET('tipo'),
+                    $data->__GET('direccion'),
+                    $data->__GET('telefono'),
+                    $data->__GET('correo'),
+                    $data->__GET('idproveedor')
+                ));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
         public function eliminarProveedor($idproveedor){
             try{
                 $stm = $this->pdo->prepare("DELETE FROM Proveedor WHERE idproveedor = ?");
@@ -149,11 +166,6 @@
             }
         }
         
-
-
-
-
-
         public function listarProducto() {
             try {
                 $result = array();
@@ -202,6 +214,23 @@
                     $data->__GET('precio'),
                     $data->__GET('stock'),
                     $data->__GET('proveedor_id'),
+                ));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+        public function actualizarProducto(Local $data){
+            try {
+                $stm = "UPDATE Producto SET tituloproducto = ?, categoria_id = ?, descripcion = ?, precio = ?, stock = ?, proveedor_id = ? WHERE idproducto = ?";
+                echo $stm;
+                $this->pdo->prepare($stm)->execute(array(
+                    $data->__GET('tituloproducto'),
+                    $data->__GET('categoria_id'),
+                    $data->__GET('descripcion'),
+                    $data->__GET('precio'),
+                    $data->__GET('stock'),
+                    $data->__GET('proveedor_id'),
+                    $data->__GET('idproducto')
                 ));
             } catch (Exception $e) {
                 die($e->getMessage());
@@ -344,6 +373,47 @@
                 die($e->getMessage());
             }
         }
-        
+        public function agregarPersonal(Local $data){
+            try {
+                $stm = "INSERT INTO Personal (nombreperso, apellidoperso, dniperso, direccionperso, telefonoperso, passwordperso, habilitadoperso) VALUES (?,?,?,?,?,?,?)";
+                $this->pdo->prepare($stm)->execute(array(
+                    $data->__GET('nombreperso'),
+                    $data->__GET('apellidoperso'),
+                    $data->__GET('dniperso'),
+                    $data->__GET('direccionperso'),
+                    $data->__GET('telefonoperso'),
+                    $data->__GET('passwordperso'),
+                    $data->__GET('habilitadoperso'),
+                ));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+        public function actualizarPersonal(Local $data){
+            try {
+                $stm = "UPDATE Personal SET nombreperso = ?, apellidoperso = ?, dniperso = ?, direccionperso = ?, telefonoperso = ?, passwordperso = ?, habilitadoperso = ? WHERE idpersonal = ?";
+                echo $stm;
+                $this->pdo->prepare($stm)->execute(array(
+                    $data->__GET('nombreperso'),
+                    $data->__GET('apellidoperso'),
+                    $data->__GET('dniperso'),
+                    $data->__GET('direccionperso'),
+                    $data->__GET('telefonoperso'),
+                    $data->__GET('passwordperso'),
+                    $data->__GET('habilitadoperso'),
+                    $data->__GET('idpersonal')
+                ));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+        public function eliminarPersonal($idpersonal){
+            try{
+                $stm = $this->pdo->prepare("DELETE FROM Personal WHERE idpersonal = ?");
+                $stm->execute(array($idpersonal));
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
     }
 ?>

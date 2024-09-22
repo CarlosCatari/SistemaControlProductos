@@ -15,7 +15,7 @@ foreach ($model->buscarIdAdmin($idadmin) as $r) {
 }
 $NavVertical = new NavVertical();
 $NavHorizontal = new NavHorizontal($user);
-$page = new Head('Categorias');
+$page = new Head('Administrador');
 
 
 // Inicializar los tokens si no están establecidos
@@ -262,11 +262,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <td class="align-middle text-center"><?php echo $telefonoadmin; ?></td>
                                                     <td class="align-middle"><?php echo $passwordadmin; ?></td>
                                                     <td class="align-middle text-center"><?php echo $habilitadoadmin; ?></td>
-
                                                     <td class="text-center align-middle">
                                                         <div class="d-flex justify-content-around align-items-stretch">
-                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?php echo $idadmin; ?>">Editar</button>
-                                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?php echo $idadmin; ?>">Eliminar</button>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?php echo $idadmin; ?>">Editar</button>
+<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?php echo $idadmin; ?>">Eliminar</button>
+
 
                                                             <!---------- Modal Editar Categoría ---------->
                                                             <div class="modal fade" id="editModal<?php echo $idadmin; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $idadmin; ?>" aria-hidden="true">
@@ -281,6 +281,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                         <div class="modal-body">
                                                                             <form action="admadmin.php" id="FormEditCat<?php echo $idadmin; ?>" method="post" class="p-0">
                                                                                 <div class="row">
+                                                                                    
                                                                                     <div class="col-md-12 form-group text-left">
                                                                                         <input type="hidden" name="tokenedit" value="<?php echo $_SESSION['tokenedit']; ?>">
                                                                                         <input type="hidden" name="modcodadmin" value="<?php echo $idadmin; ?>">
@@ -329,7 +330,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                             <!---------- Modal Eliminar Categoría ---------->
                                                             <div class="modal fade" id="deleteModal<?php echo $idadmin; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel<?php echo $idadmin; ?>" aria-hidden="true">
                                                                 <div class="modal-dialog modal-dialog-centered" role="document">
