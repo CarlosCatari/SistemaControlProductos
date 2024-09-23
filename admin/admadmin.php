@@ -264,6 +264,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <td class="align-middle text-center"><?php echo $habilitadoadmin; ?></td>
                                                     <td class="text-center align-middle">
                                                         <div class="d-flex justify-content-around align-items-stretch">
+
+                                                        
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?php echo $idadmin; ?>">Editar</button>
 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?php echo $idadmin; ?>">Eliminar</button>
 

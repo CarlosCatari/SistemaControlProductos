@@ -24,7 +24,7 @@ $page = new Head('Consultas');
 <body id="page-top">
     <div id="wrapper">
         <?php echo $NavPages->renderPagesNav(); ?>
-        <div id="content-wrapper" class="d-flex flex-column" style="background-color: #400057;">
+        <div id="content-wrapper" class="d-flex flex-column" style="background-color: #0039b4;">
             <div id="content">
                 <?php echo $NavHorizontal->renderNavbar(); ?>
                 <div class="container-fluid">
@@ -112,7 +112,7 @@ $page = new Head('Consultas');
                 </div>
             </div>
 
-            <footer class="sticky-footer" style="background-color: #400057;">
+            <footer class="sticky-footer" style="background-color: #1738b9;">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span>Sistema control productos</span>

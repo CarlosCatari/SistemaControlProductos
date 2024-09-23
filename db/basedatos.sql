@@ -1,4 +1,4 @@
---Tabla Administradores 
+
 CREATE TABLE Administrador (
     idadmin INT AUTO_INCREMENT PRIMARY KEY,
     nombreadmin VARCHAR(255) NOT NULL,
@@ -13,7 +13,6 @@ INSERT INTO Administrador (nombreadmin, apellidoadmin, dniadmin, direccionadmin,
 ('Carlos Abel', 'Catari Mamani', '70407040', 'Av. Ejercito 500','987654321', 'admin', '1'),
 ('Angel Gabriel', 'Coaquira Santos', "84519652", 'Av. Aviacion 1000', '986548154', 'angel55', '0');
 
---Tabla Administradores 
 CREATE TABLE Personal (
     idpersonal INT AUTO_INCREMENT PRIMARY KEY,
     nombreperso VARCHAR(255) NOT NULL,
@@ -28,7 +27,6 @@ INSERT INTO Personal (nombreperso, apellidoperso, dniperso, direccionperso, tele
 ('Sebastian', 'Santos Paz', '70457740', 'Av. Arequipa 500','987654561', 'sebas123', '1'),
 ('Gabriel', 'Coaquira Santos', "84598652", 'Av. Bustamante 1220', '986589154', 'gabriel123', '0');
 
--- Tabla Categoria
 CREATE TABLE Categoria (
     idcategoria INT AUTO_INCREMENT PRIMARY KEY,
     titulocategoria VARCHAR(100) NOT NULL
@@ -37,7 +35,6 @@ INSERT INTO Categoria (titulocategoria) VALUES
 ('Electrodomestico'),
 ('Equipo de cómputo');
 
--- Tabla Proveedor
 CREATE TABLE Proveedor (
     idproveedor INT AUTO_INCREMENT PRIMARY KEY,
     ruc VARCHAR(11) NOT NULL,
@@ -51,7 +48,6 @@ INSERT INTO Proveedor (ruc, nombre, tipo, direccion, telefono, correo) VALUES
 ('20704015448', 'COMPUTADORAS Y TELECOMUNICACIONES S.A', 'ADQUISICIÓN DE SOFTWARE, EQUIPOS Y SERVICIOS TI','Av Ejercito 404', '954987456', 'computele@gmail.com'),
 ('20804015582', 'AVATAR S.A.C.', 'ADQUISICIÓN DE SOFTWARE, EQUIPOS Y SERVICIOS TI', 'Av Aviación 1050', '954654321', 'avatar400@gmail.com');
 
--- Tabla Producto
 CREATE TABLE Producto (
     idproducto INT AUTO_INCREMENT PRIMARY KEY,
     tituloproducto VARCHAR(100) NOT NULL,

@@ -75,7 +75,7 @@
     <link href="./source/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head> 
-<body class="d-flex justify-content-center align-items-center vh-100" style="background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(80,9,121,1) 54%, rgba(196,0,255,1) 100%);">
+<body class="d-flex justify-content-center align-items-center vh-100" style="background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(80,9,121,1) 50%, rgba(0,47,238,1) 100%);">
     <form action="index.php" method="post">
         <div class="bg-white p-5 rounded text-secondary position-relative">
             <div class="d-flex justify-content-center">
