@@ -2,15 +2,15 @@
 require_once "../mvc/conectar.php";
 require_once "../mvc/Local.Model.php";
 require_once "../mvc/Local.entidad.php";
+include_once '../est/pagesnavh.php';
 include_once '../est/pagesnav.php';
-include_once '../est/horizontalnav.php';
 require_once '../est/head.php';
 $loc = new local();
 $model = new LocalModel();
 
 session_start();
 $idpersonal = $_SESSION['idpersonal'];
-foreach ($model->buscarIdPersonal($idpersonal) as $r) {
+foreach ($model->buscarIdPersonal($idpersonal) as $r) { 
     $user = $r->__get('nombreperso');
 }
 $NavPages = new NavPages();
@@ -18,12 +18,12 @@ $NavHorizontal = new NavHorizontal($user);
 $page = new Head('Administrador');
 ?>
 
-<?php echo $page->render(); ?>
+<?php echo $page->render();; ?>
 
 <body id="page-top">
     <div id="wrapper">
         <?php echo $NavPages->renderPagesNav(); ?>
-        <div id="content-wrapper" class="d-flex flex-column" style="background-color: #0039b4;">
+        <div id="content-wrapper" class="d-flex flex-column" style="background-color: #cecece;">
             <div id="content">
                 <?php echo $NavHorizontal->renderNavbar(); ?>
                 <div class="container-fluid">
@@ -33,7 +33,7 @@ $page = new Head('Administrador');
                     <div class="row mt-3">
                         <div class="card shadow mb-4 w-100">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Listar Administradores</h6>
+                                <h6 class="m-0 font-weight-bold" style="color: #002349;">Listar Administradores</h6>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -78,7 +78,7 @@ $page = new Head('Administrador');
                 </div>
             </div>
 
-            <footer class="sticky-footer" style="background-color: #1738b9;">
+            <footer class="sticky-footer" style="background-color: #002349;">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span>Sistema control productos</span>

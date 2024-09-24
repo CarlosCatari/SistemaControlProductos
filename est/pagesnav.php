@@ -49,8 +49,8 @@ class NavPages {
 
     public function renderPagesNav() {
 ?>
-        <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #00187a;">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html" style="background-color: #001050;">
+        <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #002349;">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html" style="background-color: #001832;">
                 <div class="sidebar-brand-text mx-3">Personal</div>
             </a>
             <hr class="sidebar-divider my-0">

@@ -2,8 +2,8 @@
 require_once "../mvc/conectar.php";
 require_once "../mvc/Local.Model.php";
 require_once "../mvc/Local.entidad.php";
+include_once '../est/pagesnavh.php';
 include_once '../est/pagesnav.php';
-include_once '../est/horizontalnav.php';
 require_once '../est/head.php';
 $loc = new local();
 $model = new LocalModel();
@@ -29,10 +29,11 @@ $idpersonal = $_SESSION['idpersonal'];
 ?>
 
 <?php echo $page->render();; ?>
+
 <body id="page-top">
     <div id="wrapper">
         <?php echo $NavPages->renderPagesNav(); ?>
-        <div id="content-wrapper" class="d-flex flex-column" style="background-color: #0039b4;">
+        <div id="content-wrapper" class="d-flex flex-column" style="background-color: #cecece;">
             <div id="content">
                 <?php echo $NavHorizontal->renderNavbar(); ?>
                 <div class="container-fluid">
@@ -128,7 +129,7 @@ $idpersonal = $_SESSION['idpersonal'];
                 </div>
             </div>
 
-            <footer class="sticky-footer" style="background-color: #1738b9;">
+            <footer class="sticky-footer" style="background-color: #002349;">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span>Sistema control productos</span>

@@ -2,27 +2,20 @@
 require_once "../mvc/conectar.php";
 require_once "../mvc/Local.Model.php";
 require_once "../mvc/Local.entidad.php";
+include_once '../est/pagesnavh.php';
 include_once '../est/pagesnav.php';
-include_once '../est/horizontalnav.php';
 require_once '../est/head.php';
 $loc = new local();
 $model = new LocalModel();
 
 session_start();
 $idpersonal = $_SESSION['idpersonal'];
-foreach ($model->buscarIdPersonal($idpersonal) as $r) {
-    $idpersonal = $r->__get('idpersonal');
-    $nombreperso = $r->__get('nombreperso');
-    $apellidoperso = $r->__get('apellidoperso');
-    $dniperso = $r->__get('dniperso');
-    $direccionperso = $r->__get('direccionperso');
-    $telefonoperso = $r->__get('telefonoperso');
-    $passwordperso = $r->__get('passwordperso');
-    $habilitadoperso = $r->__get('habilitadoperso');
+foreach ($model->buscarIdPersonal($idpersonal) as $r) { 
+    $user = $r->__get('nombreperso');
 }
 $NavPages = new NavPages();
-$NavHorizontal = new NavHorizontal($nombreperso);
-$page = new Head('Administrador');
+$NavHorizontal = new NavHorizontal($user);
+$page = new Head('Perfil');
 
 
 // Inicializar los tokens si no están establecidos
@@ -65,17 +58,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<?php echo $page->render(); ?>
+<?php echo $page->render();; ?>
 
 <body id="page-top">
     <div id="wrapper">
         <?php echo $NavPages->renderPagesNav(); ?>
-        <div id="content-wrapper" class="d-flex flex-column" style="background-color: #400057;">
+        <div id="content-wrapper" class="d-flex flex-column" style="background-color: #cecece;">
             <div id="content">
                 <?php echo $NavHorizontal->renderNavbar(); ?>
                 <div class="container-fluid">
                     <div class="row">
-                        <h1 class="h3 mb-0 text-gray-800">Mis Datos</h1>
+                        <h1 class="m-0 font-weight-bold" style="color: #002349;">Mis Datos</h1>
                     </div>
                     <div class="row">
                         <div class="navbar navbar-expand navbar-light topbar mb-2 static-top shadow w-100">
@@ -217,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
-            <footer class="sticky-footer" style="background-color: #400057;">
+            <footer class="sticky-footer" style="background-color: #002349;">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span>Sistema control productos</span>

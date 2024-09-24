@@ -440,5 +440,79 @@
                 die($e->getMessage());
             }
         }
+
+        public function buscarProductoPorProveedor($idproveedor){
+            try {
+                $result = array();
+                $stm = $this->pdo->prepare( 'SELECT 
+                        p.idproducto, 
+                        p.tituloproducto, 
+                        c.titulocategoria AS categoria, 
+                        p.descripcion, 
+                        p.precio, 
+                        p.stock, 
+                        pr.nombre AS proveedor
+                    FROM 
+                        Producto p
+                    JOIN 
+                        Categoria c ON p.categoria_id = c.idcategoria
+                    JOIN 
+                        Proveedor pr ON p.proveedor_id = pr.idproveedor 
+                    WHERE 
+                        p.proveedor_id = '.$idproveedor);
+                $stm->Execute();
+                foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r){
+                    $loc = new local();
+                    $loc->__Set('idproducto', $r->idproducto);
+                    $loc->__Set('tituloproducto', $r->tituloproducto);
+                    $loc->__Set('categoria', $r->categoria);
+                    $loc->__Set('descripcion', $r->descripcion);
+                    $loc->__Set('precio', $r->precio);
+                    $loc->__Set('stock', $r->stock);
+                    $loc->__Set('proveedor', $r->proveedor);
+                    $result[] = $loc;
+                }
+                return $result;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+        
+        public function buscarProductoPorCategoria($idcategoria){
+            try {
+                $result = array();
+                $stm = $this->pdo->prepare( 'SELECT 
+                        p.idproducto, 
+                        p.tituloproducto, 
+                        c.titulocategoria AS categoria, 
+                        p.descripcion, 
+                        p.precio, 
+                        p.stock, 
+                        pr.nombre AS proveedor
+                    FROM 
+                        Producto p
+                    JOIN 
+                        Categoria c ON p.categoria_id = c.idcategoria
+                    JOIN 
+                        Proveedor pr ON p.proveedor_id = pr.idproveedor 
+                    WHERE 
+                        p.categoria_id = '.$idcategoria);
+                $stm->Execute();
+                foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r){
+                    $loc = new local();
+                    $loc->__Set('idproducto', $r->idproducto);
+                    $loc->__Set('tituloproducto', $r->tituloproducto);
+                    $loc->__Set('categoria', $r->categoria);
+                    $loc->__Set('descripcion', $r->descripcion);
+                    $loc->__Set('precio', $r->precio);
+                    $loc->__Set('stock', $r->stock);
+                    $loc->__Set('proveedor', $r->proveedor);
+                    $result[] = $loc;
+                }
+                return $result;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
     }
 ?>
