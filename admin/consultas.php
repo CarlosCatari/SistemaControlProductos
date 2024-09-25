@@ -89,6 +89,32 @@ $page = new Head('Consultas');
                                 <h6 class="m-0 font-weight-bold text-primary">Resultado de Búsqueda</h6>
                             </div>
                             <div class="card-body">
+                                <!------ Cantidad por categoria o proveedor -------->
+                                <?php
+                                    $contadorcategoria = 0;
+                                    $contadorproveedor = 0;
+                                    if (isset($_GET['buscar']) && isset($_GET['detalle'])) {
+                                        $detalle = $_GET['detalle'];
+                                        $consulta = $_GET['consulta'];
+                                        if ($consulta == "0") {
+                                            $contadorcategoria = $model->contarProductosPorCategoria($detalle);
+                                ?>
+                                        <div>
+                                            <p class="text-left"><strong>Total de productos en esta categoría: <?php echo $contadorcategoria; ?></strong></p>
+                                        </div>
+                                <?php
+
+                                        } elseif ($consulta == "1") {
+                                            $contadorproveedor = $model->contarProductosPorProveedor($detalle);
+                                ?>
+                                        <div>
+                                            <p class="text-left"><strong>Total de productos con este proveedor: <?php echo $contadorproveedor; ?></strong></p>
+                                        </div>
+                                <?php
+                                        }
+                                    }
+                                ?>
+                                
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
@@ -106,6 +132,7 @@ $page = new Head('Consultas');
                                         if (isset($_GET['buscar']) && isset($_GET['detalle'])) {
                                             $detalle = $_GET['detalle'];
                                             $consulta = $_GET['consulta'];
+                                            
 
                                             if ($consulta == "0") {
                                                 // Buscar productos por categoría
@@ -128,9 +155,6 @@ $page = new Head('Consultas');
                                                         <td class="align-middle"><?php echo $proveedor; ?></td>
                                                     </tr>
                                         <?php endforeach;
-
-
-
                                             } elseif ($consulta == "1") {
                                                 // Buscar productos por proveedor
                                                 foreach ($model->buscarProductoPorProveedor($detalle) as $r) :

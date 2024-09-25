@@ -514,5 +514,28 @@
                 die($e->getMessage());
             }
         }
+
+        public function contarProductosPorCategoria($categoria){
+            try {
+                $stm = $this->pdo->prepare('SELECT COUNT(*) AS cantidad_producto FROM producto WHERE categoria_id = ?');
+                $stm->execute([$categoria]);
+                $r = $stm->fetch(PDO::FETCH_OBJ);
+                return $r->cantidad_producto;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+        public function contarProductosPorProveedor($proveedor){
+            try {
+                $stm = $this->pdo->prepare('SELECT COUNT(*) AS cantidad_producto FROM producto WHERE proveedor_id = ?');
+                $stm->execute([$proveedor]);
+                $r = $stm->fetch(PDO::FETCH_OBJ);
+                return $r->cantidad_producto;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+        
+
     }
 ?>
