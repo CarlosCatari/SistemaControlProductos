@@ -54,9 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data->__set('passwordadmin', $passwordadm);
             $data->__set('habilitadoadmin', $habiladm);
 
-            $model->actualizarAdministrador(data: $data);
+            $model->actualizarAdministrador($data);
             $_SESSION['msjeditperfil'] = 'Datos modificado correctamente.';
-            header(header: 'Location: perfiladmin.php');
+            header('Location: perfiladmin.php');
             exit;
         }
     } else {
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <form action="perfiladmin.php" id="FormAddAdm" method="post" class="p-0">
                                                     <div class="row m-0 p-0">
                                                         <div class="col-md-12 form-group text-left">
-                                                            <input type="hidden" name="token" value="<?php echo htmlspecialchars(string: $_SESSION['token']); ?>">
+                                                            <input type="hidden" name="token" value="<?php echo htmlspecialchars($_SESSION['token']); ?>">
                                                             <input type="hidden" name="modcodadmin" value="<?php echo $idadmin; ?>">
                                                             <label for="nombreadm">Nombre</label>
                                                             <input type="text" name="nombreadm" id="nombreadm" value="<?php echo $nombreadmin ;?>" class="form-control border-primary rounded-3" placeholder="Nombre" pattern="[a-zA-Z\s]+" required>
@@ -138,9 +138,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                         </div>
                     </div>
-
-
-
 
                     <div class="row">
                         <div class="card shadow mb-4 w-100">
@@ -196,9 +193,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </div>
                                     </div>
                                 </div>
-
-
-
                             </div>
                         </div>
                     </div>

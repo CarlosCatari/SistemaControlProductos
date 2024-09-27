@@ -12,7 +12,14 @@ session_start();
 $idpersonal = $_SESSION['idpersonal'];
 foreach ($model->buscarIdPersonal($idpersonal) as $r) { 
     $user = $r->__get('nombreperso');
+    $apellidoperso = $r->__get('apellidoperso');
+    $dniperso = $r->__get('dniperso');
+    $direccionperso = $r->__get('direccionperso');
+    $telefonoperso = $r->__get('telefonoperso');
+    $passwordperso = $r->__get('passwordperso');
+    $habilitadoperso = $r->__get('habilitadoperso');
 }
+
 $NavPages = new NavPages();
 $NavHorizontal = new NavHorizontal($user);
 $page = new Head('Perfil');
@@ -24,32 +31,31 @@ if (empty($_SESSION['token'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['tokenedit']) && $_POST['tokenedit'] === $_SESSION['tokenedit']) {
+    if (isset($_POST['token']) && $_POST['token'] === $_SESSION['token']) {
         // Actualizacion de Personal
-        if (isset($_POST["modcodadmin"])) {
-            $idadmin = $_POST['modcodadmin'];
-            $nombreadmin = $_POST['nombreadm'];
-            $apellidoadmin = $_POST['apellidoadm'];
-            $dniadmin = $_POST['dniadm'];
-            $direccionadmin = $_POST['direccionadm'];
-            $telefonoadmin = $_POST['telefonoadm'];
-            $passwordadmin = $_POST['contraadm'];
-            $habilitadoadmin = $_POST['habilitadoadm'];
+        if (isset($_POST["modcodperso"])) {
+            $modcodperso = $_POST['modcodperso'];
+            $nombreper = $_POST['nombreper'];
+            $apellidoper = $_POST['apellidoper'];
+            $dniper = $_POST['dniper'];
+            $direccionper = $_POST['direccionper'];
+            $telefonoper = $_POST['telefonoper'];
+            $passwordper = $_POST['contraper'];
+            $habilitadoper = $_POST['habilitadoper'];
 
             $data = new Local();
-            $data->__set('idadmin', $idadmin);
-            $data->__set('nombreadmin', $nombreadmin);
-            $data->__set('apellidoadmin', $apellidoadmin);
-            $data->__set('dniadmin', $dniadmin);
-            $data->__set('direccionadmin', $direccionadmin);
-            $data->__set('telefonoadmin', $telefonoadmin);
-            $data->__set('passwordadmin', $passwordadmin);
-            $data->__set('habilitadoadmin', $habilitadoadmin);
+            $data->__set('idpersonal', $modcodperso);
+            $data->__set('nombreperso', $nombreper);
+            $data->__set('apellidoperso', $apellidoper);
+            $data->__set('dniperso', $dniper);
+            $data->__set('direccionperso', $direccionper);
+            $data->__set('telefonoperso', $telefonoper);
+            $data->__set('passwordperso', $passwordper);
+            $data->__set('habilitadoperso', $habilitadoper);
 
-            $model->actualizarAdministrador($data);
-            $editadmin = strtoupper($nombreadmin) . " " . strtoupper($apellidoadmin);
-            $_SESSION['msjeditcat'] = 'Administrador ' . $editadmin . ' modificado correctamente.';
-            header(header: 'Location: admadmin.php');
+            $model->actualizarPersonal($data);
+            $_SESSION['msjeditper'] = 'Datos modificados correctamente.';
+            header('Location: perfil.php');
             exit;
         }
     } else {
@@ -73,79 +79,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="row">
                         <div class="navbar navbar-expand navbar-light topbar mb-2 static-top shadow w-100">
                             <div class="d-flex w-100">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?php echo $idadmin; ?>">Modificar Datos</button>
-
-
-                                                            <!---------- Modal Editar Categoría ---------->
-                                                            <div class="modal fade" id="editModal<?php echo $idadmin; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $idadmin; ?>" aria-hidden="true">
-                                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title" id="editModalLabel<?php echo $idadmin; ?>">Editar Administrador</h5>
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <form action="admadmin.php" id="FormEditCat<?php echo $idadmin; ?>" method="post" class="p-0">
-                                                                                <div class="row">
-                                                                                    
-                                                                                    <div class="col-md-12 form-group text-left">
-                                                                                        <input type="hidden" name="tokenedit" value="<?php echo $_SESSION['tokenedit']; ?>">
-                                                                                        <input type="hidden" name="modcodadmin" value="<?php echo $idadmin; ?>">
-
-                                                                                        <label for="nombreadm">Nombre</label>
-                                                                                        <input type="text" name="nombreadm" id="nombreadm" class="form-control border-primary rounded-3" value="<?php echo $nombreadmin; ?>" placeholder="Nombre" pattern="[a-zA-Z\s]+" required>
-                                                                                    </div>
-                                                                                    <div class="col-md-12 form-group text-left">
-                                                                                        <label for="apellidoadm">Apelllido</label>
-                                                                                        <input type="text" name="apellidoadm" id="apellidoadm" class="form-control border-primary rounded-3" value="<?php echo $apellidoadmin; ?>" placeholder="Apellido" pattern="[a-zA-Z\s]+" required>
-                                                                                    </div>
-                                                                                    <div class="col-md-12 form-group text-left d-flex">
-                                                                                        <div class="col-6 m-0 pl-0">
-                                                                                            <label for="dniadm">DNI</label>
-                                                                                            <input type="text" name="dniadm" id="dniadm" class="form-control border-primary rounded-3" value="<?php echo $dniadmin; ?>" placeholder="DNI" required>
-                                                                                        </div>
-                                                                                        <div class="col-6 m-0 p-0">
-                                                                                            <label for="telefonoadm">Telefono</label>
-                                                                                            <input type="text" name="telefonoadm" id="telefonoadm" class="form-control border-primary rounded-3" value="<?php echo $telefonoadmin; ?>" placeholder="Telefono" required>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col-md-12 form-group text-left">
-                                                                                        <label for="direccionadm">Direccion</label>
-                                                                                        <input type="text" name="direccionadm" id="direccionadm" class="form-control border-primary rounded-3" value="<?php echo $direccionadmin; ?>" placeholder="Direccion" required>
-                                                                                    </div>
-                                                                                    <div class="col-md-12 form-group text-left d-flex">
-                                                                                        <div class="col-6 m-0 pl-0">
-                                                                                            <label for="contraadm">Contraseña</label>
-                                                                                            <input type="text" name="contraadm" id="contraadm" class="form-control border-primary rounded-3" value="<?php echo $passwordadmin; ?>" placeholder="Contraseña" required>
-                                                                                        </div>
-                                                                                        <div class="col-6 m-0 p-0">
-                                                                                            <label for="habilitadoadm">Habilitado</label>
-                                                                                            <select class="form-control border-primary rounded-3" name="habilitadoadm" id="habilitadoadm" aria-label="Default select example">
-                                                                                                <option value="" disabled <?php echo ($habilitadoadmin === "") ? 'selected' : ''; ?>>Seleccionar</option>
-                                                                                                <option value="1" <?php echo ($habilitadoadmin === '1') ? 'selected' : ''; ?>>Habilitado</option>
-                                                                                                <option value="0" <?php echo ($habilitadoadmin === '0' || $habilitadoadmin === 0) ? 'selected' : ''; ?>>Deshabilitado</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                    </div>
-                                                                            </form>
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                                            <button type="submit" form="FormEditCat<?php echo $idadmin; ?>" class="btn btn-primary">Guardar Cambios</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                <!---------- Modal Editar Datos---------->
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Modificar Datos</button>
+                                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addModalLabel">Actualizar Datos</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="perfil.php" id="FormAddAdm" method="post" class="p-0">
+                                                    <div class="row m-0 p-0">
+                                                        <div class="col-md-12 form-group text-left d-flex">
+                                                            <div class="col-6 m-0 pl-0">
+                                                                <input type="hidden" name="token" value="<?php echo htmlspecialchars($_SESSION['token']); ?>">
+                                                                <label for="modcodperso">Codigo:</label>
+                                                                <input type="text" name="modcodperso" id="modcodperso" value="<?php echo $idpersonal ;?>" class="form-control border-primary rounded-3" readonly>
                                                             </div>
+                                                            <div class="col-6 m-0 p-0">
+                                                                <label for="dniper">DNI:</label>
+                                                                <input type="text" name="dniper" id="dniper" value="<?php echo $dniperso ;?>" class="form-control border-primary rounded-3" readonly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 form-group text-left d-flex">
+                                                            <div class="col-6 m-0 pl-0">
+                                                                <label for="nombreper">Nombre:</label>
+                                                                <input type="text" name="nombreper" id="nombreper" value="<?php echo $user ;?>" class="form-control border-primary rounded-3" readonly>
+                                                            </div>
+                                                            <div class="col-6 m-0 p-0">
+                                                                <label for="apellidoper">Apelllido:</label>
+                                                                <input type="text" name="apellidoper" id="apellidoper" value="<?php echo $apellidoperso ;?>"  class="form-control border-primary rounded-3" readonly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 form-group text-left">
+                                                            <label for="telefonoper">Telefono:</label>
+                                                            <input type="text" name="telefonoper" id="telefonoper" value="<?php echo $telefonoperso ;?>"  class="form-control border-primary rounded-3" placeholder="Telefono" required>
+                                                        </div>
+                                                        <div class="col-md-12 form-group text-left">
+                                                            <label for="direccionper">Direccion:</label>
+                                                            <input type="text" name="direccionper" id="direccionper" value="<?php echo $direccionperso ;?>"  class="form-control border-primary rounded-3" placeholder="Direccion" required>
+                                                        </div>
+                                                        <div class="col-md-12 form-group text-left">
+                                                            <label for="contraper">Contraseña:</label>
+                                                            <input type="text" name="contraper" id="contraper" value="<?php echo $passwordperso ;?>"  class="form-control border-primary rounded-3" placeholder="Contraseña" required>
+                                                            <input type="hidden" name="habilitadoper" id="habilitadoper" value="<?php echo $habilitadoperso ;?>">
 
-
-
-
-
-
-
-
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                <button form="FormAddAdm" type="submit" class="btn btn-primary">Guardar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -153,62 +145,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="row">
                         <div class="card shadow mb-4 w-100">
                             <div class="card-body">
-                                <?php if (!empty($msjmodificacion)): ?>
+                                <!--------------------------- Alertas -------------------------->
+                                <?php if (!empty($_SESSION['msjeditper'])): ?>
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <?php echo $msjmodificacion; ?>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <?php echo htmlspecialchars($_SESSION['msjeditper']); ?>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
+                                    <?php unset($_SESSION['msjeditper']); ?>
                                 <?php endif; ?>
 
                                 <div class="container-fluid">
                                     <div class="bg-white p-3 text-secondary ">
                                         <div class="row mb-3">
                                             <div class="col col-12 col-md-6">
-                                                <label class="form-label" for="nombre_uno">Codigo:</label>
-                                                <input class="form-control" type="text" value="<?php echo $idpersonal; ?>" readonly>
+                                                <label class="form-label" for="codigo">Codigo:</label>
+                                                <input class="form-control" type="text" name="codigo" id="codigo" value="<?php echo $idpersonal; ?>" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col col-12 col-md-6">
-                                                <label class="form-label" for="nombre_uno">Nombre::</label>
-                                                <input class="form-control" type="text" value="<?php echo $nombreperso; ?>" readonly>
+                                                <label class="form-label" for="usernames">Nombre:</label>
+                                                <input class="form-control" type="text" name="usernames" id="usernames" value="<?php echo $user; ?>" readonly>
                                             </div>
                                             <div class="col col-12 col-md-6 ">
-                                                <label class="form-label" for="nombre_uno">Apellido:</label>
-                                                <input class="form-control" type="text" value="<?php echo $apellidoperso; ?>" readonly>
+                                                <label class="form-label" for="surnames">Apellido:</label>
+                                                <input class="form-control" type="text" name="surnames" id="surnames" value="<?php echo $apellidoperso; ?>" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col col-12 col-md-6">
-                                                <label class="form-label" for="nombre_uno">DNI:</label>
-                                                <input class="form-control" type="text" value="<?php echo $dniperso; ?>" readonly>
+                                                <label class="form-label" for="dni">DNI:</label>
+                                                <input class="form-control" type="text" name="dni" id="dni" value="<?php echo $dniperso; ?>" readonly>
                                             </div>
                                             <div class="col col-12 col-md-6">
-                                                <label class="form-label" for="nombre_uno">Contraseña:</label>
-                                                <input class="form-control" type="text" value="<?php echo $passwordperso; ?>" readonly>
+                                                <label class="form-label" for="contrasenia">Contraseña:</label>
+                                                <input class="form-control" type="text" name="contrasenia" id="contrasenia" value="<?php echo $passwordperso; ?>" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col col-12 col-md-6">
-                                                <label class="form-label" for="nombre_uno">Direccion:</label>
-                                                <input class="form-control" type="text" value="<?php echo $direccionperso; ?>" readonly>
+                                                <label class="form-label" for="address">Direccion:</label>
+                                                <input class="form-control" type="text" name="address" id="address" value="<?php echo $direccionperso; ?>" readonly>
                                             </div>
                                             <div class="col col-12 col-md-6">
-                                                <label class="form-label" for="nombre_uno">Telefono:</label>
-                                                <input class="form-control" type="text" value="<?php echo $telefonoperso; ?>" readonly>
+                                                <label class="form-label" for="phone">Telefono:</label>
+                                                <input class="form-control" type="text" name="phone" id="phone" value="<?php echo $telefonoperso; ?>" readonly>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-
-
                             </div>
                         </div>
                     </div>
 
                 </div>
             </div>
+                    
 
             <footer class="sticky-footer" style="background-color: #002349;">
                 <div class="container my-auto">
