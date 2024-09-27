@@ -49,11 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data->__set('telefonoadmin', $telefonoadm);
             $data->__set('passwordadmin', $contraadm);
             $data->__set('habilitadoadmin', $habilitadoadm);
-            $model->agregarAdministrador(data: $data);
+            $model->agregarAdministrador($data);
 
             $newadmin = strtoupper($nombreadm) . " " . strtoupper($apellidoadm);
             $_SESSION['msjaddadmin'] = 'Administrador ' . $newadmin . ' agregado correctamente.';
-            header(header: 'Location: admadmin.php');
+            header('Location: admadmin.php');
             exit;
         }
     } elseif (isset($_POST['tokendlt']) && $_POST['tokendlt'] === $_SESSION['tokendlt']) {
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $codigoadmin = $_POST['codigoadmin'];
             $model->eliminarAdministrador($codigoadmin);
             $_SESSION['msjdeleteadm'] = 'Administrador eliminado correctamente.';
-            header(header: 'Location: admadmin.php');
+            header('Location: admadmin.php');
             exit;
         }
     } elseif (isset($_POST['tokenedit']) && $_POST['tokenedit'] === $_SESSION['tokenedit']) {
@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $model->actualizarAdministrador($data);
             $editadmin = strtoupper($nombreadmin) . " " . strtoupper($apellidoadmin);
             $_SESSION['msjeditcat'] = 'Administrador ' . $editadmin . ' modificado correctamente.';
-            header(header: 'Location: admadmin.php');
+            header('Location: admadmin.php');
             exit;
         }
     } else {
@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <form action="admadmin.php" id="FormAddAdm" method="post" class="p-0">
                                                     <div class="row m-0 p-0">
                                                         <div class="col-md-12 form-group text-left">
-                                                            <input type="hidden" name="token" value="<?php echo htmlspecialchars(string: $_SESSION['token']); ?>">
+                                                            <input type="hidden" name="token" value="<?php echo htmlspecialchars($_SESSION['token']); ?>">
                                                             <label for="nombreadm">Nombre</label>
                                                             <input type="text" name="nombreadm" id="nombreadm" class="form-control border-primary rounded-3" placeholder="Nombre" pattern="[a-zA-Z\s]+" required>
                                                         </div>
@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                 <select class="form-control border-primary rounded-3" name="habilitadoadm" id="habilitadoadm" aria-label="Default select example">
                                                                     <option value="" disabled selected>Seleccionar</option>
                                                                     <option value="1">Habilitado</option>
-                                                                    <option value="2">Desabilitado</option>
+                                                                    <option value="0">Desabilitado</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -265,11 +265,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <td class="text-center align-middle">
                                                         <div class="d-flex justify-content-around align-items-stretch">
 
+    
                                                         
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?php echo $idadmin; ?>">Editar</button>
 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?php echo $idadmin; ?>">Eliminar</button>
-
-
                                                             <!---------- Modal Editar Categoría ---------->
                                                             <div class="modal fade" id="editModal<?php echo $idadmin; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $idadmin; ?>" aria-hidden="true">
                                                                 <div class="modal-dialog modal-dialog-centered" role="document">

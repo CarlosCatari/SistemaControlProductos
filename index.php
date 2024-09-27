@@ -54,7 +54,7 @@
         }else {
             $_SESSION['contador']++;
             if ($_SESSION['contador'] < 4) {
-                $error = "Usuario o contraseña incorrectos. Te quedan " . (4 - $_SESSION['contador']) . " intentos.";
+                $error = "“Error-Usuario no registrado. Quedan " . (4 - $_SESSION['contador']) . " intentos.";
             } else {
                 header('Location: error.php');
                 $_SESSION['contador'] = 0;
