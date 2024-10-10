@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $model->actualizarPersonal($data);
             $editperso = strtoupper($nombreper) . " " . strtoupper($apellidoper);
-            $_SESSION['msjeditper'] = 'Personal ' . $editperso . ' modificado correctamente.';
+            $_SESSION['msjeditper'] = 'Almacenero ' . $editperso . ' modificado correctamente.';
             header(header: 'Location: admpersonal.php');
             exit;
         }
@@ -109,19 +109,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php echo $NavHorizontal->renderNavbar(); ?>
                 <div class="container-fluid">
                     <div class="row">
-                        <h1 class="h3 mb-0 text-gray-800">Personal</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Almaceneros</h1>
                     </div>
                     <div class="row">
                         <div class="navbar navbar-expand navbar-light topbar mb-2 static-top shadow w-100">
                             <div class="d-flex w-100">
 
                                 <!---------- Modal Agregar Personal ---------->
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Agregar Personal</button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Agregar Almacenero</button>
                                 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="addModalLabel">Nuevo Personal</h5>
+                                                <h5 class="modal-title" id="addModalLabel">Nuevo Almacenero</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -180,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                 <form class="d-inline-block form-inline ml-auto mw-100 navbar-search">
                                     <div class="input-group">
-                                        <input type="text" name="searchpersonal" class="form-control bg-light border-0 small" placeholder="Buscar Personal" aria-label="Search" aria-describedby="basic-addon2">
+                                        <input type="text" name="searchpersonal" class="form-control bg-light border-0 small" placeholder="Buscar" aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="button">
                                                 <i class="fas fa-search fa-sm"></i>

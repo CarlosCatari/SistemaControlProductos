@@ -151,6 +151,24 @@
             }
         }
         
+        public function buscarProveedor($tituloproveedor){
+            try {
+                $result = array();
+                $stm = $this->pdo->prepare('SELECT * FROM Proveedor WHERE nombre LIKE :tituloproveedor');
+                $stm->bindValue(':tituloproveedor', '%' . $tituloproveedor . '%');
+                $stm->Execute();
+                foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r){
+                    $loc = new local();
+                    $loc->__Set('idproveedor', $r->idproveedor);
+                    $loc->__Set('nombre', $r->nombre);
+                    $result[] = $loc;
+                }
+                return $result;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+
         public function listarProducto() {
             try {
                 $result = array();

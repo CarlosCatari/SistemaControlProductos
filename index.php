@@ -44,7 +44,7 @@
                 break;
             }
         }
-    
+        
         if ($verificadoradmin) {
             header('Location: admin/dashboard.php');
             exit();

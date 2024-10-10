@@ -17,7 +17,7 @@ class NavPages {
             [
                 "href" => "personal.php",
                 "icon" => "fas fa-fw fa-solid fa-address-card",
-                "text" => "Personal"
+                "text" => "Almaceneros"
             ],
             [
                 "href" => "proveedor.php",

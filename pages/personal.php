@@ -28,12 +28,12 @@ $page = new Head('Personal');
                 <?php echo $NavHorizontal->renderNavbar(); ?>
                 <div class="container-fluid">
                     <div class="row">
-                        <h1 class="h3 mb-0 text-gray-800">Personal</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Almaceneros</h1>
                     </div>
                     <div class="row mt-3">
                         <div class="card shadow mb-4 w-100">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold" style="color: #002349;">Listar Personal</h6>
+                                <h6 class="m-0 font-weight-bold" style="color: #002349;">Listar Almaceneros</h6>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">

@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $newproducto = strtoupper($tituloprod);
             $_SESSION['msjaddprod'] = 'Producto ' . $newproducto . ' agregado correctamente.';
-            header(header: 'Location: admproducto.php');
+            header(header: 'Location: producto.php');
             exit;
         }
     } elseif (isset($_POST['tokenedit']) && $_POST['tokenedit'] === $_SESSION['tokenedit']) {
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $model->actualizarProducto($data);
             $editprod = strtoupper($titulopro);
             $_SESSION['msjeditpro'] = 'Producto ' . $editprod . ' modificado correctamente.';
-            header(header: 'Location: admproducto.php');
+            header(header: 'Location: producto.php');
             exit;
         }
     } else {
@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 </button>
                                             </div>
                                             <div class="modal-body p-1">
-                                                <form action="admproducto.php" id="FormAddProd" method="post" class="px-3">
+                                                <form action="producto.php" id="FormAddProd" method="post" class="px-3">
                                                     <div class="row mb-1">
                                                         <div class="col-md-12 form-group text-left">
                                                             <label for="tituloprod" class="mb-0 mt-1">Producto:</label>
@@ -172,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                                 <form class="d-inline-block form-inline ml-auto mw-100 navbar-search">
                                     <div class="input-group">
-                                        <input type="text" name="searchproduct" class="form-control bg-light border-0 small" placeholder="Buscar categoria"
+                                        <input type="text" name="searchproduct" class="form-control bg-light border-0 small" placeholder="Buscar"
                                             aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="button">
@@ -260,37 +260,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                         </div>
                                                                         <div class="modal-body">
 
-                                                                            <form action="admproducto.php" id="FormEditCat<?php echo $idproducto; ?>" method="post" class="p-3">
+                                                                            <form action="producto.php" id="FormEditCat<?php echo $idproducto; ?>" method="post" class="p-3">
                                                                                 <div class="container-fluid">
 
                                                                                     <div class="mb-2 form-group text-left">
                                                                                         <input type="hidden" name="tokenedit" value="<?php echo htmlspecialchars(string: $_SESSION['tokenedit']); ?>">
-                                                                                        <input type="text" name="modcodpro" value="<?php echo $idproducto; ?>">
-
+                                                                                        <input type="hidden" name="modcodpro" value="<?php echo $idproducto; ?>">
                                                                                         <label for="titulopro" class="mb-0 mt-1">Producto:</label>
-
-                                                                                        <input type="text" name="titulopro" id="titulopro" class="form-control border-primary rounded-3" value="<?php echo $tituloproducto; ?>" placeholder="Titulo del producto" required>
+                                                                                        <input type="text" name="titulopro" id="titulopro" class="form-control border-primary rounded-3" value="<?php echo $tituloproducto; ?>" readonly>
                                                                                         
                                                                                     </div>
 
                                                                                     <div class="mb-2 form-group text-left">
                                                                                         <label for="categoriapro" class="mb-0 mt-1">Categoria</label>
-                                                                                        <select class="form-control border-primary rounded-3" name="categoriapro" id="categoriapro" aria-label="Default select example">
-                                                                                        <option value="" disabled>Seleccionar Categoria</option>
-                                                                                        <?php foreach ($model->listarCategoria() as $r):
-                                                                                            $idcat = $r->__get('idcategoria');
-                                                                                            $titulocat = $r->__get('titulocategoria');
-                                                                                        ?>
-                                                                                        <option value="<?php echo $idcat; ?>" <?php echo ($titulocat == $categoria) ? 'selected' : ''; ?>>
-                                                                                            <?php echo $titulocat;?>
-                                                                                        </option>
-                                                                                        <?php endforeach; ?>
-                                                                                        </select>
+                                                                                        <?php foreach ($model->buscarCategoria($categoria) as $r):
+                                                                                            $idcateg = $r->__get('idcategoria');
+                                                                                            $namecateg = $r->__get('titulocategoria');
+                                                                                        endforeach; ?>
+                                                                                        <input type="hidden" name="categoriapro" id="categoriapro" value="<?php echo $idcateg; ?>">
+                                                                                        <input type="text" class="form-control border-primary rounded-3" value="<?php echo $namecateg; ?>" readonly>
                                                                                     </div>
 
                                                                                     <div class="mb-2 form-group text-left">
                                                                                         <label for="descripcionpro" class="form-label">Descripción:</label>
-                                                                                        <textarea class="form-control border-primary rounded-3" name="descripcionpro" id="descripcionpro" placeholder="Breve descripción del producto" rows="3"><?php echo $descripcion; ?></textarea>
+                                                                                        <textarea class="form-control border-primary rounded-3" name="descripcionpro" id="descripcionpro" readonly><?php echo $descripcion; ?></textarea>
                                                                                     </div>
                                                                                     <div class="mb-2 form-group text-left d-flex">
                                                                                         <div class="col-6 pl-0">
@@ -299,22 +292,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                         </div>
                                                                                         <div class="col-6 p-0">
                                                                                             <label for="stockpro" class="form-label">Stock:</label>
-                                                                                            <input type="text" name="stockpro" id="stockpro"  class="form-control border-primary rounded-3" value="<?php echo $stock; ?>" placeholder="Cantidad en almacén" required>
+                                                                                            <input type="text" name="stockpro" id="stockpro"  class="form-control border-primary rounded-3" value="<?php echo $stock; ?>" readonly>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="mb-2 form-group text-left">
                                                                                         <label for="proveedorpro" class="mb-0 mt-1">Proveedor:</label>
-                                                                                        <select class="form-control border-primary rounded-3" name="proveedorpro" id="proveedorpro" aria-label="Default select example">
-                                                                                            <option value="" disabled>Seleccionar Proveedor</option>
-                                                                                            <?php foreach ($model->listarProveedor() as $r):
-                                                                                                $idpro = $r->__get('idproveedor');
-                                                                                                $nombrepro = $r->__get('nombre');
-                                                                                            ?>
-                                                                                            <option value="<?php echo $idpro; ?>" <?php echo ($nombrepro == $proveedor) ? 'selected' : ''; ?>>
-                                                                                                <?php echo $nombrepro; ?>
-                                                                                            </option>
-                                                                                            <?php endforeach; ?>
-                                                                                        </select>
+                                                                                        
+                                                                                        <?php foreach ($model->buscarProveedor($proveedor) as $r):
+                                                                                            $idprovee = $r->__get('idproveedor');
+                                                                                            $nameprovee = $r->__get('nombre');
+                                                                                        endforeach; ?>
+                                                                                        <input type="hidden" name="proveedorpro" id="proveedorpro" value="<?php echo $idprovee; ?>">
+                                                                                        <input type="text" class="form-control border-primary rounded-3" value="<?php echo $nameprovee; ?>" readonly>
                                                                                     </div>
                                                                                 </div>
                                                                             </form>

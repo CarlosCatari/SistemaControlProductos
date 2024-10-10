@@ -17,7 +17,7 @@ class NavVertical {
             [
                 "href" => "admpersonal.php",
                 "icon" => "fas fa-fw fa-solid fa-address-card",
-                "text" => "Personal"
+                "text" => "Almaceneros"
             ],
             [
                 "href" => "admproveedor.php",
