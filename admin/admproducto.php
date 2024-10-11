@@ -51,16 +51,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $newproducto = strtoupper($tituloprod);
             $_SESSION['msjaddprod'] = 'Producto ' . $newproducto . ' agregado correctamente.';
-            header(header: 'Location: admproducto.php');
+            header('Location: admproducto.php');
             exit;
         }
     // Eliminación de Productos
     } elseif (isset($_POST['tokendlt']) && $_POST['tokendlt'] === $_SESSION['tokendlt']) {
         if (isset($_POST['codigoprod'])) {
             $idproducto = $_POST['codigoprod'];
-            $model->eliminarProducto(idproducto: $idproducto);
+            $model->eliminarProducto($idproducto);
             $_SESSION['msjdeleteprod'] = 'Producto eliminado correctamente.';
-            header(header: 'Location: admproducto.php');
+            header('Location: admproducto.php');
             exit;
         }
     }  elseif (isset($_POST['tokenedit']) && $_POST['tokenedit'] === $_SESSION['tokenedit']) {
@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $model->actualizarProducto($data);
             $editprod = strtoupper($titulopro);
             $_SESSION['msjeditpro'] = 'Producto ' . $editprod . ' modificado correctamente.';
-            header(header: 'Location: admproducto.php');
+            header('Location: admproducto.php');
             exit;
         }
     } else {
@@ -286,8 +286,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                 <div class="container-fluid">
 
                                                                                     <div class="mb-2 form-group text-left">
-                                                                                        <input type="hidden" name="tokenedit" value="<?php echo htmlspecialchars(string: $_SESSION['tokenedit']); ?>">
-                                                                                        <input type="text" name="modcodpro" value="<?php echo $idproducto; ?>">
+                                                                                        <input type="hidden" name="tokenedit" value="<?php echo htmlspecialchars($_SESSION['tokenedit']); ?>">
+                                                                                        <input type="hidden" name="modcodpro" value="<?php echo $idproducto; ?>">
 
                                                                                         <label for="titulopro" class="mb-0 mt-1">Producto:</label>
 

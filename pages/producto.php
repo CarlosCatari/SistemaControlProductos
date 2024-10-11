@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $newproducto = strtoupper($tituloprod);
             $_SESSION['msjaddprod'] = 'Producto ' . $newproducto . ' agregado correctamente.';
-            header(header: 'Location: producto.php');
+            header('Location: producto.php');
             exit;
         }
     } elseif (isset($_POST['tokenedit']) && $_POST['tokenedit'] === $_SESSION['tokenedit']) {
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $model->actualizarProducto($data);
             $editprod = strtoupper($titulopro);
             $_SESSION['msjeditpro'] = 'Producto ' . $editprod . ' modificado correctamente.';
-            header(header: 'Location: producto.php');
+            header('Location: producto.php');
             exit;
         }
     } else {
@@ -259,18 +259,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                             </button>
                                                                         </div>
                                                                         <div class="modal-body">
-
                                                                             <form action="producto.php" id="FormEditCat<?php echo $idproducto; ?>" method="post" class="p-3">
                                                                                 <div class="container-fluid">
-
                                                                                     <div class="mb-2 form-group text-left">
-                                                                                        <input type="hidden" name="tokenedit" value="<?php echo htmlspecialchars(string: $_SESSION['tokenedit']); ?>">
+                                                                                        <input type="hidden" name="tokenedit" value="<?php echo htmlspecialchars($_SESSION['tokenedit']); ?>">
                                                                                         <input type="hidden" name="modcodpro" value="<?php echo $idproducto; ?>">
                                                                                         <label for="titulopro" class="mb-0 mt-1">Producto:</label>
-                                                                                        <input type="text" name="titulopro" id="titulopro" class="form-control border-primary rounded-3" value="<?php echo $tituloproducto; ?>" readonly>
-                                                                                        
+                                                                                        <input type="text" name="titulopro" id="titulopro" class="form-control border-primary rounded-3" value="<?php echo $tituloproducto; ?>" readonly>               
                                                                                     </div>
-
                                                                                     <div class="mb-2 form-group text-left">
                                                                                         <label for="categoriapro" class="mb-0 mt-1">Categoria</label>
                                                                                         <?php foreach ($model->buscarCategoria($categoria) as $r):
@@ -280,7 +276,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                         <input type="hidden" name="categoriapro" id="categoriapro" value="<?php echo $idcateg; ?>">
                                                                                         <input type="text" class="form-control border-primary rounded-3" value="<?php echo $namecateg; ?>" readonly>
                                                                                     </div>
-
                                                                                     <div class="mb-2 form-group text-left">
                                                                                         <label for="descripcionpro" class="form-label">Descripción:</label>
                                                                                         <textarea class="form-control border-primary rounded-3" name="descripcionpro" id="descripcionpro" readonly><?php echo $descripcion; ?></textarea>
@@ -297,7 +292,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                     </div>
                                                                                     <div class="mb-2 form-group text-left">
                                                                                         <label for="proveedorpro" class="mb-0 mt-1">Proveedor:</label>
-                                                                                        
                                                                                         <?php foreach ($model->buscarProveedor($proveedor) as $r):
                                                                                             $idprovee = $r->__get('idproveedor');
                                                                                             $nameprovee = $r->__get('nombre');
