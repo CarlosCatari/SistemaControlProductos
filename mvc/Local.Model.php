@@ -180,7 +180,8 @@
                         p.descripcion, 
                         p.precio, 
                         p.stock, 
-                        pr.nombre AS proveedor
+                        pr.nombre AS proveedor,
+                        p.habilitadoprod
                     FROM 
                         Producto p
                     JOIN 
@@ -199,6 +200,7 @@
                     $loc->__Set('precio', $r->precio);
                     $loc->__Set('stock', $r->stock);
                     $loc->__Set('proveedor', $r->proveedor);
+                    $loc->__Set('habilitadoprod', $r->habilitadoprod);
                     $result[] = $loc;
                 }
         
@@ -209,7 +211,7 @@
         }
         public function agregarProducto(Local $data){
             try {
-                $stm = "INSERT INTO Producto (tituloproducto, categoria_id, descripcion, precio, stock, proveedor_id) VALUES (?,?,?,?,?,?)";
+                $stm = "INSERT INTO Producto (tituloproducto, categoria_id, descripcion, precio, stock, proveedor_id, habilitadoprod) VALUES (?,?,?,?,?,?,?)";
                 $this->pdo->prepare($stm)->execute(array(
                     $data->__GET('tituloproducto'),
                     $data->__GET('categoria_id'),
@@ -217,6 +219,7 @@
                     $data->__GET('precio'),
                     $data->__GET('stock'),
                     $data->__GET('proveedor_id'),
+                    $data->__GET('habilitadoprod'),
                 ));
             } catch (Exception $e) {
                 die($e->getMessage());
@@ -224,7 +227,7 @@
         }
         public function actualizarProducto(Local $data){
             try {
-                $stm = "UPDATE Producto SET tituloproducto = ?, categoria_id = ?, descripcion = ?, precio = ?, stock = ?, proveedor_id = ? WHERE idproducto = ?";
+                $stm = "UPDATE Producto SET tituloproducto = ?, categoria_id = ?, descripcion = ?, precio = ?, stock = ?, proveedor_id = ?, habilitadoprod = ? WHERE idproducto = ?";
                 echo $stm;
                 $this->pdo->prepare($stm)->execute(array(
                     $data->__GET('tituloproducto'),
@@ -233,6 +236,7 @@
                     $data->__GET('precio'),
                     $data->__GET('stock'),
                     $data->__GET('proveedor_id'),
+                    $data->__GET('habilitadoprod'),
                     $data->__GET('idproducto')
                 ));
             } catch (Exception $e) {

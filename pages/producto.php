@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $precioprod = $_POST["precioprod"];
             $stockprod = $_POST["stockprod"];
             $proveedorprod = $_POST["proveedorprod"];
+            $habilitadoproduc = $_POST["habilitadoproduc"];
 
             $data = new Local();
             $data->__set('tituloproducto', $tituloprod);
@@ -44,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data->__set('precio', $precioprod);
             $data->__set('stock', $stockprod);
             $data->__set('proveedor_id', $proveedorprod);
+            $data->__set('habilitadoprod', $habilitadoproduc);
             $model->agregarProducto($data);
 
             $newproducto = strtoupper($tituloprod);
@@ -61,6 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $preciopro = $_POST["preciopro"];
             $stockpro = $_POST["stockpro"];
             $proveedorpro = $_POST["proveedorpro"];
+            $habilitadopro = $_POST["habilitadopro"];
+            
+
 
             $data = new Local();
             $data->__set('idproducto', $idproducto);
@@ -70,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data->__set('precio', $preciopro);
             $data->__set('stock', $stockpro);
             $data->__set('proveedor_id', $proveedorpro);
+            $data->__set('habilitadoprod', $habilitadopro);
 
             $model->actualizarProducto($data);
             $editprod = strtoupper($titulopro);
@@ -80,12 +86,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         die('Token inválido');
     }
-
 }
 ?>
 
 <?php echo $page->render();; ?>
-
 <body id="page-top">
     <div id="wrapper">
         <?php echo $NavPages->renderPagesNav(); ?>
@@ -131,18 +135,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                 <?php endforeach; ?>
                                                             </select>
 
-                                                            <div class="mb-3">
-                                                                <label for="descripcionprod" class="form-label">Descripción:</label>
-                                                                <textarea class="form-control border-primary rounded-3" name="descripcionprod" id="descripcionprod" placeholder="Breve descripción del producto" rows="3"></textarea>
-                                                            </div>
+                                                        
+                                                            <label for="descripcionprod" class="mb-0 mt-1">Descripción:</label>
+                                                            <textarea class="form-control border-primary rounded-3" name="descripcionprod" id="descripcionprod" placeholder="Breve descripción del producto" rows="3"></textarea>
+                                                            
 
-                                                            <div class="mb-3 row">
+                                                            <div class="mb-0 mt-1 row">
                                                                 <div class="col-6">
-                                                                    <label for="precioprod" class="form-label">Precio:</label>
+                                                                    <label for="precioprod" class="form-label mb-0 mt-1">Precio X Unidad:</label>
                                                                     <input type="text" name="precioprod" id="precioprod" class="form-control border-primary rounded-3" placeholder="S/. 00.00" required>
                                                                 </div>
                                                                 <div class="col-6">
-                                                                    <label for="stockprod" class="form-label">Stock:</label>
+                                                                    <label for="stockprod" class="form-label mb-0 mt-1">Stock:</label>
                                                                     <input type="text" name="stockprod" id="stockprod"  class="form-control border-primary rounded-3" placeholder="Cantidad en almacén" required>
                                                                 </div>
                                                             </div>
@@ -158,6 +162,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                 </option>
                                                                 <?php endforeach; ?>
                                                             </select>
+
+                                                            <div class="mb-0 mt-1 row">
+                                                                <div class="col-6">
+                                                                <label for="habilitadoproduc" class="mb-0 mt-1">* Estado:</label>
+                                                                <select class="form-control border-primary rounded-3" name="habilitadoproduc" id="habilitadoproduc" aria-label="Default select example">
+                                                                    <option value="0">Desabilitado</option>
+                                                                </select>
+                                                                </div>
+                                                                <div class="col-6 d-flex align-items-end">
+                                                                <span>*Comunicar a administración para habilitación de productos</span>
+                                                                </div>
+                                                            </div>
 
                                                         </div>
                                                     </div>
@@ -223,6 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <th class="col-1 text-center align-middle">Precio</th>
                                                 <th class="col-1 text-center align-middle">Stock</th>
                                                 <th class="col-1 text-center align-middle">Proveedor</th>
+                                                <th class="col-1 text-center align-middle">Estado</th>
                                                 <th class="col-1 text-center align-middle">Accion</th>
                                             </tr>
                                         </thead>
@@ -235,6 +252,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 $precio = $r->__get('precio');
                                                 $stock = $r->__get('stock');
                                                 $proveedor = $r->__get('proveedor');
+                                                $habilitadoprod = $r->__get('habilitadoprod');
+
+                                                if ($habilitadoprod == 1):
+                                                $status = ($habilitadoprod == 1 )? "Habilitado" : "Desabilitado";
+                                                
                                             ?>
                                                 <tr>
                                                     <td class="text-center align-middle"><?php echo $idproducto; ?></td>
@@ -244,6 +266,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <td class="align-middle text-center"><?php echo $precio; ?></td>
                                                     <td class="align-middle text-center"><?php echo $stock; ?></td>
                                                     <td class="align-middle"><?php echo $proveedor; ?></td>
+                                                    <td class="align-middle text-center"><?php echo $status; ?></td>
                                                     <td class="text-center align-middle">
                                                         <div class="d-flex justify-content-around align-items-stretch">
                                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?php echo $idproducto; ?>">Editar</button>
@@ -258,16 +281,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                 <span aria-hidden="true">&times;</span>
                                                                             </button>
                                                                         </div>
-                                                                        <div class="modal-body">
-                                                                            <form action="producto.php" id="FormEditCat<?php echo $idproducto; ?>" method="post" class="p-3">
+                                                                        <div class="modal-body p-1">
+                                                                            <form action="producto.php" id="FormEditCat<?php echo $idproducto; ?>" method="post" class="px-3">
                                                                                 <div class="container-fluid">
-                                                                                    <div class="mb-2 form-group text-left">
+                                                                                    <div class="mb-1 form-group text-left">
                                                                                         <input type="hidden" name="tokenedit" value="<?php echo htmlspecialchars($_SESSION['tokenedit']); ?>">
                                                                                         <input type="hidden" name="modcodpro" value="<?php echo $idproducto; ?>">
                                                                                         <label for="titulopro" class="mb-0 mt-1">Producto:</label>
                                                                                         <input type="text" name="titulopro" id="titulopro" class="form-control border-primary rounded-3" value="<?php echo $tituloproducto; ?>" readonly>               
                                                                                     </div>
-                                                                                    <div class="mb-2 form-group text-left">
+                                                                                    <div class="mb-1 form-group text-left">
                                                                                         <label for="categoriapro" class="mb-0 mt-1">Categoria</label>
                                                                                         <?php foreach ($model->buscarCategoria($categoria) as $r):
                                                                                             $idcateg = $r->__get('idcategoria');
@@ -276,21 +299,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                         <input type="hidden" name="categoriapro" id="categoriapro" value="<?php echo $idcateg; ?>">
                                                                                         <input type="text" class="form-control border-primary rounded-3" value="<?php echo $namecateg; ?>" readonly>
                                                                                     </div>
-                                                                                    <div class="mb-2 form-group text-left">
-                                                                                        <label for="descripcionpro" class="form-label">Descripción:</label>
+                                                                                    <div class="mb-1 form-group text-left">
+                                                                                        <label for="descripcionpro" class="mb-0 mt-1">Descripción:</label>
                                                                                         <textarea class="form-control border-primary rounded-3" name="descripcionpro" id="descripcionpro" readonly><?php echo $descripcion; ?></textarea>
                                                                                     </div>
-                                                                                    <div class="mb-2 form-group text-left d-flex">
+                                                                                    <div class="mb-1 form-group text-left d-flex">
                                                                                         <div class="col-6 pl-0">
-                                                                                            <label for="preciopro" class="form-label">Precio:</label>
+                                                                                            <label for="preciopro" class="form-label mb-0 mt-1">Precio:</label>
                                                                                             <input type="text" name="preciopro" id="preciopro" class="form-control border-primary rounded-3" value="<?php echo $precio; ?>" placeholder="S/. 00.00" required>
                                                                                         </div>
                                                                                         <div class="col-6 p-0">
-                                                                                            <label for="stockpro" class="form-label">Stock:</label>
+                                                                                            <label for="stockpro" class="form-label mb-0 mt-1">Stock:</label>
                                                                                             <input type="text" name="stockpro" id="stockpro"  class="form-control border-primary rounded-3" value="<?php echo $stock; ?>" readonly>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="mb-2 form-group text-left">
+                                                                                    <div class="mb-1 form-group text-left">
                                                                                         <label for="proveedorpro" class="mb-0 mt-1">Proveedor:</label>
                                                                                         <?php foreach ($model->buscarProveedor($proveedor) as $r):
                                                                                             $idprovee = $r->__get('idproveedor');
@@ -298,6 +321,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                                         endforeach; ?>
                                                                                         <input type="hidden" name="proveedorpro" id="proveedorpro" value="<?php echo $idprovee; ?>">
                                                                                         <input type="text" class="form-control border-primary rounded-3" value="<?php echo $nameprovee; ?>" readonly>
+                                                                                    </div>
+                                                                                    <div class="mb-1 form-group text-left d-flex">
+                                                                                        <div class="col-6 pl-0">
+                                                                                        
+                                                                                        <label for="habilitadopro" class="mb-0 mt-1">Estado:</label>
+                                                                                        <input type="hidden" name="habilitadopro" id="habilitadopro" value="<?php echo $habilitadoprod; ?>">
+                                                                                        <input type="text" class="form-control border-primary rounded-3" value="<?php echo $status; ?>" readonly>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </form>
@@ -313,7 +344,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            <?php endforeach; ?>
+                                            <?php 
+                                                endif;
+                                            endforeach; 
+                                            ?>
                                         </tbody>
                                     </table>
                                 </div>

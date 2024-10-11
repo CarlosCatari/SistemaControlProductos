@@ -62,3 +62,16 @@ CREATE TABLE Producto (
 INSERT INTO Producto (tituloproducto, categoria_id, descripcion, precio, stock, proveedor_id) VALUES
 ('Licuadora', 1, '4 velocidades', 70.00, 15, 1),
 ('Monitor', 2, 'Gaming 30"', 450.00, 5, 2);
+
+
+
+ALTER TABLE Producto
+ADD habilitadoprod INT(2)NOT NULL;
+
+UPDATE Producto
+SET habilitadoprod = 1
+WHERE idproducto = 1;
+
+UPDATE Producto
+SET habilitadoprod = 0
+WHERE idproducto = 2;
