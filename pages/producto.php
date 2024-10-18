@@ -256,7 +256,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                                 if ($habilitadoprod == 1):
                                                 $status = ($habilitadoprod == 1 )? "Habilitado" : "Desabilitado";
-                                                
                                             ?>
                                                 <tr>
                                                     <td class="text-center align-middle"><?php echo $idproducto; ?></td>

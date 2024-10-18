@@ -10,8 +10,8 @@ CREATE TABLE Administrador (
     habilitadoadmin INT(2)NOT NULL
 );
 INSERT INTO Administrador (nombreadmin, apellidoadmin, dniadmin, direccionadmin, telefonoadmin, passwordadmin, habilitadoadmin) VALUES
-('Carlos Abel', 'Catari Mamani', '70407040', 'Av. Ejercito 500','987654321', 'admin', '1'),
-('Angel Gabriel', 'Coaquira Santos', "84519652", 'Av. Aviacion 1000', '986548154', 'angel55', '0');
+('Jose Manuel', 'Salas Montenegro', '70407040', 'Av. Ejercito 500','987654321', 'admin', '1'),
+('Angel Gabriel', 'Coaquira Santos', "70407041", 'Av. Aviacion 1000', '986548154', 'angel123', '0');
 
 CREATE TABLE Personal (
     idpersonal INT AUTO_INCREMENT PRIMARY KEY,
@@ -24,8 +24,8 @@ CREATE TABLE Personal (
     habilitadoperso INT(2)NOT NULL
 );
 INSERT INTO Personal (nombreperso, apellidoperso, dniperso, direccionperso, telefonoperso, passwordperso, habilitadoperso) VALUES
-('Sebastian', 'Santos Paz', '70457740', 'Av. Arequipa 500','987654561', 'sebas123', '1'),
-('Gabriel', 'Coaquira Santos', "84598652", 'Av. Bustamante 1220', '986589154', 'gabriel123', '0');
+('Sebastian', 'Santos Paz', '70407050', 'Av. Arequipa 500','987654561', 'sebas123', '1'),
+('Gabriel', 'Coaquira Santos', "70407051", 'Av. Bustamante 1220', '986589154', 'gabriel123', '0');
 
 CREATE TABLE Categoria (
     idcategoria INT AUTO_INCREMENT PRIMARY KEY,
@@ -62,7 +62,6 @@ CREATE TABLE Producto (
 INSERT INTO Producto (tituloproducto, categoria_id, descripcion, precio, stock, proveedor_id) VALUES
 ('Licuadora', 1, '4 velocidades', 70.00, 15, 1),
 ('Monitor', 2, 'Gaming 30"', 450.00, 5, 2);
-
 
 
 ALTER TABLE Producto
